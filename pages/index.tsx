@@ -2,7 +2,7 @@ import Head from 'next/head';
 import 'aos/dist/aos.css';
 import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
-import axios from 'axios';
+
 
 declare global {
   interface Window {
@@ -25,14 +25,22 @@ export default function Home({ projects }: any) {
         var container = document.getElementById('map');
         var options = {
           center: new window.window.kakao.maps.LatLng(37.543536094587516, 127.07741635877292),
-          level: 10,
+          level: 3
         }
   
         var mapInstance = new window.kakao.maps.Map(container, options);
 
+        var imageSrc = '/images/marker1.png',    
+            imageSize = new window.kakao.maps.Size(24, 35);
+
+        var markerImage = new window.kakao.maps.MarkerImage(imageSrc, imageSize),
+            markerPosition = mapInstance.getCenter(); // 마커가 표시될 위치입니다
+
         var marker = new window.kakao.maps.Marker({
-          position: mapInstance.getCenter()
-        });  
+          position: markerPosition,
+          image: markerImage, // 마커 이미지 설정
+          clickable: true // 마커를 클릭했을 때 지도의 중심좌표를 클릭된 마커의 위치로 이동
+        });
 
         marker.setMap(mapInstance);
 
@@ -57,7 +65,7 @@ export default function Home({ projects }: any) {
 
   },[]);
 
-  function zoomIn(): void {      
+  function zoomIn(): void {    
     if (!mapRef.current)
       return;
     
@@ -68,7 +76,7 @@ export default function Home({ projects }: any) {
     mapRef.current.setLevel(level - 1);
   }    
 
-  function zoomOut(): void {        
+  function zoomOut(): void {      
     if (!mapRef.current)
       return;
     
@@ -89,66 +97,14 @@ export default function Home({ projects }: any) {
       </Head>
       <div>
         <div id="map" className="w-full h-screen">
-            <p style={
-              {
-                position: 'absolute',
-                top: '50%',
-                right: '0%',
-                zIndex: 20,
-                display: 'flex',
-                flexDirection: 'column',
-                borderRadius: '10px',
-                border: '2px solid black',
-              }
-            }>
-              <button style={{
-                  width: '44px',
-                  height: '40px',
-                  backgroundColor: 'white',
-                  borderTopLeftRadius: '10px',
-                  borderTopRightRadius: '10px',
-                  fontSize: '20px',
-                  fontWeight: 'bold',
-                  color: 'black',
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center'
-                }} onClick={zoomIn}
-                ><Image src="/images/zoomInBtn.png" 
-                alt="Zoom Out"
-                width={80}
-                height={80}
-                style={{
-                  width: '80%',
-                  height: '80%',
-                }}
-                /></button>
-                <button style={{
-                  width: '44px',
-                  height: '40px',
-                  backgroundColor: 'white',
-                  fontSize: '20px',
-                  borderBottomLeftRadius: '10px',
-                  borderBottomRightRadius: '10px',
-                  fontWeight: 'bold',
-                  borderTop: '1px solid black',
-                  color: 'black',
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center'
-                }} onClick={zoomOut}>
-                  <Image src="/images/zoomOutBtn.png" 
-                  alt="Zoom Out"
-                  width={80}
-                  height={80}
-                  style={{
-                    transform: 'rotate(90deg)',
-                    width: '100%',
-                    height: '80%',
-                  }}
-                  />
-                </button>
-                
+            <p className="absolute top-1/2 right-0 z-20 flex flex-col rounded-lg border-2 border-black">
+              <button className="w-11 h-10 bg-white rounded-t-lg flex justify-center items-center" onClick={zoomIn}>
+                <Image src="/images/zoomInBtn.png" alt="Zoom Out" width={80} height={80}/>
+              </button>
+              <div className="w-11 h-0.5 bg-black"/>
+              <button className="w-11 h-10 bg-white rounded-b-lg flex justify-center items-center" onClick={zoomOut}>
+                <Image src="/images/zoomOutBtn.png" alt="Zoom Out" width={80} height={80} style={{transform: 'rotate(90deg)'}}/>
+              </button>  
             </p>
         </div>
           </div>
