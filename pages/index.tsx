@@ -2,6 +2,7 @@ import Head from 'next/head';
 import 'aos/dist/aos.css';
 import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
+import Header from '../components/main/Header';
 
 
 declare global {
@@ -96,12 +97,12 @@ export default function Home({ projects }: any) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div>
+        <Header user="홍길동" profileImage="/images/profile.png"/>
         <div id="map" className="w-full h-screen">
             <p className="absolute top-1/2 right-0 z-20 flex flex-col rounded-lg border-2 border-black">
-              <button className="w-11 h-10 bg-white rounded-t-lg flex justify-center items-center" onClick={zoomIn}>
+              <button className="w-11 h-10 bg-white rounded-t-lg flex justify-center items-center border-b-2 border-black" onClick={zoomIn}>
                 <Image src="/images/zoomInBtn.png" alt="Zoom Out" width={80} height={80}/>
               </button>
-              <div className="w-11 h-0.5 bg-black"/>
               <button className="w-11 h-10 bg-white rounded-b-lg flex justify-center items-center" onClick={zoomOut}>
                 <Image src="/images/zoomOutBtn.png" alt="Zoom Out" width={80} height={80} style={{transform: 'rotate(90deg)'}}/>
               </button>  
