@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import Header from '../components/main/UserProfile';
 import MarkerList from '@/components/main/MarkerList';
+import UserMarker from '@/components/main/UserMarker';
 
 
 declare global {
@@ -100,6 +101,7 @@ export default function Home({ projects }: any) {
       <div>
         <MarkerList />
         <Header user="홍길동" profileImage="/images/profile.png"/>
+        <UserMarker />
         <div id="map" className="w-full h-screen">
             <p className="absolute top-1/2 right-0 z-20 flex flex-col rounded-lg border-2 border-black">
               <button className="w-11 h-10 bg-white rounded-t-lg flex justify-center items-center border-b-2 border-black" onClick={zoomIn}>
