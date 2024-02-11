@@ -2,7 +2,8 @@ import Head from 'next/head';
 import 'aos/dist/aos.css';
 import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
-import Header from '../components/main/Header';
+import Header from '../components/main/UserProfile';
+import MarkerList from '@/components/main/MarkerList';
 
 
 declare global {
@@ -97,6 +98,7 @@ export default function Home({ projects }: any) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div>
+        <MarkerList />
         <Header user="홍길동" profileImage="/images/profile.png"/>
         <div id="map" className="w-full h-screen">
             <p className="absolute top-1/2 right-0 z-20 flex flex-col rounded-lg border-2 border-black">
