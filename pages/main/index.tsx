@@ -6,7 +6,8 @@ import Header from '@/components/main/UserProfile';
 import MarkerList from '@/components/main/MarkerList';
 import UserMarker from '@/components/main/UserMarker';
 import LocationInfo from '@/components/main/LocationInfo';
-import { ListItemProps } from '@/components/main/MarkerList';
+import MapRegisterModal from '@/components/modal/MapRegisterModal';
+import MarkerRegisterButton from '@/components/button/MarkerRegisterButton';
 
 declare global {
   interface Window {
@@ -18,6 +19,9 @@ export default function Main({ projects }: any) {
   const mapRef = useRef<any>(null);
 
   const [selectedItem, setSelectedItem] = useState<ListItemProps | null>(null);
+  const [selectedPage, setSelectedPage] = useState<number>(1);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isMarkerOpen, setIsMarkerOpen] = useState(false);
 
   const handleListItemClick = (item: ListItemProps) => {
     setSelectedItem(item);
@@ -27,15 +31,17 @@ export default function Main({ projects }: any) {
     setSelectedItem(null); // 선택된 아이템 상태를 null로 설정하여 LocationInfo를 숨깁니다.
   };
 
+  const handleModalBack = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleMarkerRegister = () => {
+    setIsModalOpen(true);
+    setIsMarkerOpen(false);
+  }
+
   const items: ListItemProps[] = [
-    { title: 'XX 등록완료', subtitle: '관리에서 지원 가능👍 adkfjasdfjlaskdnflaknldflansdlkfnalkfnlasnflanf', date: '2024.01.21', isBookmarked: true },
-    { title: 'XX 등록완료', subtitle: '관리에서 지원 가능👍', date: '2024.01.21', isBookmarked: false },
-    { title: 'XX 등록완료', subtitle: '관리에서 지원 가능👍', date: '2024.01.21', isBookmarked: true },
-    { title: 'XX 등록완료', subtitle: '관리에서 지원 가능👍', date: '2024.01.21', isBookmarked: true },
-    { title: 'XX 등록완료', subtitle: '관리에서 지원 가능👍', date: '2024.01.21', isBookmarked: true },
-    { title: 'XX 등록완료', subtitle: '관리에서 지원 가능👍', date: '2024.01.21', isBookmarked: true },
-    { title: 'XX 등록완료', subtitle: '관리에서 지원 가능👍', date: '2024.01.21', isBookmarked: true },
-    { title: 'XX 등록완료', subtitle: '관리에서 지원 가능👍', date: '2024.01.21', isBookmarked: true },
+    {itemId: 1, title: '서울숲', subtitle: '서울특별시 성동구 성수동1가', date: '2021.10.10', writer: '홍길동', isBookmarked: false, onClick: () => {}},
   ];
 
 
@@ -82,6 +88,8 @@ export default function Main({ projects }: any) {
           mapInstance.setCenter(latlng); // 지도 중심 변경 (클릭한 위치로)
 
           marker.setMap(mapInstance); // 마커 생성
+
+          setIsMarkerOpen(true);
         });
 
         mapRef.current = mapInstance; // 지도 인스턴스를 참조할 수 있도록 변수에 할당
@@ -112,7 +120,23 @@ export default function Main({ projects }: any) {
     console.log(level);
     
     mapRef.current.setLevel(level + 1);
-  }    
+
+  } 
+
+  const handleOverlayClick = (event: React.MouseEvent) => {
+    // 클릭한 요소가 모달이 아니면 모달을 닫습니다.
+    // 여기서 'modal-content'는 모달의 내용을 감싸는 div의 클래스명입니다.
+    if ((event.target as HTMLElement).className.includes('overlay')) {
+      console.log('overlay clicked');
+      setIsMarkerOpen(false);
+      setIsModalOpen(false);
+    }
+  };
+
+  const handlePageChange = (page: number) => {
+    setSelectedPage(page);
+  };
+  
 
   return (
     <>
@@ -123,9 +147,21 @@ export default function Main({ projects }: any) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div>
-        <MarkerList items={items} onListItemClick={handleListItemClick} />
+        <MarkerList 
+          items={items} 
+          onListItemClick={handleListItemClick} 
+          totalPages={5}
+          currentPage={selectedPage}
+          onPageChange={handlePageChange}/>
         {selectedItem && <LocationInfo data={selectedItem} onBack={handleBack} />}
+        {isModalOpen && <MapRegisterModal onBack={handleModalBack} GlobalListItemProps={{
+          title: '',
+          subtitle: '',
+          date: '',
+          isBookmarked: false
+        }}/>}
         <Header user="홍길동" profileImage="/images/profile.png"/>
+        {isMarkerOpen && <MarkerRegisterButton onClick={handleMarkerRegister} />}
         <UserMarker />
         <div id="map" className="w-full h-screen">
             <p className="absolute top-1/2 right-0 z-20 flex flex-col rounded-lg border-2 border-black">
