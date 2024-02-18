@@ -31,6 +31,56 @@ body {
   .header-nav div {
     @apply cursor-pointer text-base hover:text-blue-700;
   }
+
+  .modal {
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+  }
+  
+  .modal-input,
+  .modal-textarea {
+    width: 100%;
+    padding: 10px;
+    background-color: #fafafa;
+    margin-top: 8px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    border: 2px solid #e6e6e6;
+  }
+  
+  .modal-file-input {
+    margin-top: 8px;
+    margin-bottom: 10px;
+  }
+  
+  .image-preview {
+    width: 100%;
+    height: auto;
+    margin-bottom: 10px;
+  }
+  
+  .submit-button {
+    background-color: pink;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  .overlay {
+    position: fixed; /* 전체 화면에 고정 */
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0); /* 반투명 배경 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
 }
 
 /* ------------------------기존코드  */

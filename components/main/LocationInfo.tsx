@@ -1,7 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
 import HeartButton from '../layout/heartButton';
-import BookMarkButton from '../layout/bookmarkButton';
+import BookMarkButton from '../layout/bookMarkButton';
 
 interface LocationInfoProps {
     data: any;
