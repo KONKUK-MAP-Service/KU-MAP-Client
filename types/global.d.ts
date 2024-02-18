@@ -1,3 +1,5 @@
+export {};
+
 declare global {
     type GlobalListItemProps = {
       title: string;
@@ -13,9 +15,11 @@ declare global {
     };    
     
     type ListItemProps = {
+        itemId: number;
         title: string;
         subtitle: string;
         date: string;
+        writer: String;
         isBookmarked: boolean;
         onClick: () => void; // Add the onClick property to the ListItemProps type
       };
