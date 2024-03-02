@@ -16,9 +16,9 @@ const LoginModal: React.FC<LoginProps> = ({ onBack }) => {
             <div className="flex flex-col justify-start w-full">
                 <div className="h-[30%] w-full flex flex-row items-center justify-center"/>
                 <div className="text-lg text-[#404040] mt-10">아이디</div>
-                <input type="text" placeholder="아이디를 입력해주세요" className="py-3 w-full bg-[#fafafa] border-[2px] border-solid border-[#e6e6e6] rounded-[4px]"/>
+                <input type="text" placeholder="아이디를 입력해주세요" className="infoInput"/>
                 <div className="text-lg text-[#404040] mt-2">비밀번호</div>
-                <input type="text" placeholder="비밀번호를 입력해주세요" className="py-3 w-full bg-[#fafafa] border-[2px] border-solid border-[#e6e6e6] rounded-[4px]"/>
+                <input type="text" placeholder="비밀번호를 입력해주세요" className="infoInput"/>
                 <div className="flex flex-row items-center justify-center w-full">
                     <button className="mt-10 px-10 py-3 border-2 border-transparent bg-[#fc487e] text-white rounded-lg m-3">로그인</button>
                 </div>
