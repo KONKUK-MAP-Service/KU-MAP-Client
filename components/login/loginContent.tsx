@@ -1,5 +1,7 @@
 import React from "react";
 import Image from "next/image";
+import { useState } from "react";
+import { useRouter } from "next/router";
 
 
 interface LoginProps {
@@ -7,6 +9,47 @@ interface LoginProps {
 }
 
 const LoginContent: React.FC<LoginProps> = ({ onBack }) => {
+    const [userId, setUserId] = useState('');
+    const [password, setPassword] = useState('');
+    const router = useRouter();
+
+
+    const handleSubmit = async (event: any) => {
+        event.preventDefault();
+
+        const data = {
+            userId: userId,
+            password: password
+        };
+
+        try {
+            const url = process.env.NEXT_PUBLIC_API_URL+'/users/login';
+            console.log(data);
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            });
+
+            if (!response.ok) {
+                throw new Error(`Error: ${response.statusText}`);
+            }
+
+            const result = await response.json();
+            console.log(result);
+            var token = response.headers.get('Authorization');
+            if (token) {
+                token = token.split('Bearer ')[1];
+                localStorage.setItem('token', token);
+            }
+            router.push('/main');
+        } catch (error) {
+            console.error('Submission failed', error);
+        }
+
+    };
 
     return (
         <>
@@ -16,11 +59,19 @@ const LoginContent: React.FC<LoginProps> = ({ onBack }) => {
             <div className="flex flex-col justify-start w-full">
                 <div className="h-[30%] w-full flex flex-row items-center justify-center"/>
                 <div className="text-lg text-[#404040] mt-10">아이디</div>
-                <input type="text" placeholder="아이디를 입력해주세요" className="infoInput"/>
+                <input id="id" name="userId" type="text" autoComplete="username" pattern="[A-Za-z0-9]{2,8}"
+                 required className="infoSignup mt-1" placeholder="아이디를 입력해주세요"
+                 onChange={(e) => {
+                  setUserId(e.target.value);
+                }}/>
                 <div className="text-lg text-[#404040] mt-2">비밀번호</div>
-                <input type="text" placeholder="비밀번호를 입력해주세요" className="infoInput"/>
+                <input id="password" name="password" type="password" pattern="[A-Za-z0-9]{8,20}" autoComplete="current-password"
+                 required className="infoSignup mt-1" placeholder="비밀번호를 입력해주세요" 
+                 onChange={(e) => {
+                    setPassword(e.target.value);
+                 }}/>
                 <div className="flex flex-row items-center justify-center w-full">
-                    <button className="mt-10 px-10 py-3 border-2 border-transparent bg-[#fc487e] text-white rounded-lg m-3">로그인</button>
+                    <button className="mt-10 px-10 py-3 border-2 border-transparent bg-[#fc487e] text-white rounded-lg m-3" onClick={handleSubmit}>로그인</button>
                 </div>
                 <div className="flex flex-row items-center justify-center w-full">
                     <div className="mt-10 text-lg text-gray-600">비밀번호 찾기</div>    
