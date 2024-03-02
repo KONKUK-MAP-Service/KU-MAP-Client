@@ -1,9 +1,13 @@
+import LoginModal from "@/components/login/loginModal";
+import { useRouter } from "next/router";
 import React from "react";
 import { useState } from "react";
 
 const SignupPage = () => {
   // 체크박스 상태를 위한 상태 훅
   const [isChecked, setIsChecked] = useState(false);
+  const [isLoginMoalOpen, setIsLoginModalOpen] = useState(false);
+  const router = useRouter();
 
   // 체크박스 변경을 처리하는 함수
   const handleCheckboxChange = (event: any) => {
@@ -44,6 +48,7 @@ const SignupPage = () => {
 
       const result = await response.json(); // 서버 응답을 JSON으로 파싱
       // 성공 처리 로직(예: 알림 표시, 페이지 리디렉션 등)
+      setIsLoginModalOpen(true);
     } catch (error) {
       console.error('Submission failed', error);
       // 실패 처리 로직
@@ -53,6 +58,7 @@ const SignupPage = () => {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50 px-4 sm:px-6 lg:px-8">
       <div className="w-full max-w-4xl p-8 bg-white shadow-md overflow-hidden sm:rounded-lg">
+        {isLoginMoalOpen && LoginModal({onBack: () => router.push('/')})}
         <h2 className="text-center text-3xl leading-9 font-extrabold text-gray-900">
           회원가입
         </h2>

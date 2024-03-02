@@ -75,10 +75,11 @@ body {
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(0, 0, 0, 0); /* 반투명 배경 */
+    background-color: rgba(0, 0, 0, 0.5); /* 반투명 배경 */
     display: flex;
     justify-content: center;
     align-items: center;
+    z-index: 40; /* 다른 요소들 보다 위에 */
   }
 
   .loginModal {
@@ -92,7 +93,6 @@ body {
     /* 모달 위치 */
     position: fixed;
     top: 50%;
-    left: 75%;
     transform: translate(-50%, -50%);
     /* 패딩과 마진 */
     padding: 20px;

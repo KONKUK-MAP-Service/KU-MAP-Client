@@ -3,7 +3,7 @@ import 'aos/dist/aos.css';
 import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import LoginModal from '@/components/login/loginModal';
+import LoginModal from '../components/login/MainloginModal';
 
 export default function Home({ projects }: any) {
   const [isLoginMoalOpen, setIsLoginModalOpen] = useState(false);
@@ -43,7 +43,10 @@ export default function Home({ projects }: any) {
             </Link>
           </div>  
           <div className='flex flex-row items-center justify-center w-full'>
-            <div className="mt-4 text-gray-600">계정이 없나요? <span className="text-[#fc487e] cursor-pointer">회원가입하기</span></div>
+            <div className="mt-4 text-gray-600">계정이 없나요?</div>
+            <Link href="/signup">
+              <div className="text-[#fc487e] mt-4 ml-4 cursor-pointer">회원가입하기</div>
+            </Link>
           </div>  
         </div>
       </div>
