@@ -111,6 +111,20 @@ body {
     border-radius: 4px;
     border: 2px solid #e6e6e6;
   }
+
+  .infoSignup{
+    appearance: none;
+    border-radius: none;
+    position: relative; /* 'relative'는 'position' 속성에 사용되어야 합니다. */
+    width: 100%;
+    padding: 6px 4px; /* 원래의 두 배 값으로 설정 */
+    border: 1px solid #e6e6e6;
+    border-radius: 4px;
+    background-color: #fefefe;
+    color: #404040;
+    outline-color: #9e67f7;
+  }
+  
   
 }
 
