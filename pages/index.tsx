@@ -17,29 +17,38 @@ export default function Home({ projects }: any) {
   };
 
   return (
-    <> 
-    <div className="absolute left-[240px] mt-10 max-w-[780px] max-h-[920px] w-full h-full border-solid border-4 flex">
-      <Image src="/images/main.png" alt="main" width={780} height={920} />
-    </div>
-      <div className="absolute left-[1090px] top-[154px] w-[590px] h-[324px] text-[96px] text-[#fc487e]">
-        건대의<br/>모든 장소!
-      </div>
-      <div className="absolute left-[1090px] top-[550px] w-[590px] text-[24px] text-[#404040]">
-        건대생들이 구석구석 만들어 가는 지도<br/>나만의 장소를 공유해 보세요.
-      </div>
-      <div className="absolute left-[1408px] top-[750px] w-[234px] h-[74px] flex">
-        <Link href="/main">
-        <button className="absolute left-0 top-0 w-[234px] h-[74px] border-[3px] border-solid border-[#fc487e] rounded-[20px]">로그인없이 이용하기</button>
-        </Link>
-      </div>
-      <div className="absolute left-[1144px] top-[750px] w-[234px] h-[74px] flex">
-        <button className="absolute left-0 top-0 w-[234px] h-[74px] border-[3px] bg-[#fc487e] text-white rounded-[20px]" onClick={handleLoginModal}>로그인하고 이용하기</button>
+  <> 
+    <div className="relative flex justify-center items-center min-h-screen bg-gray-50">
+      <div className="flex flex-col md:flex-row items-center justify-around w-full">
+        {/* 이미지와 텍스트 컨테이너 */}
+        <div className="flex flex-col items-center">
+          <Image src="/images/anton.jpeg" alt="main" width={780} height={920} style={{
+              maxWidth: '100vw', // 화면 너비를 넘지 않도록
+              maxHeight: '100vh', // 화면 높이를 넘지 않도록
+              width: 'auto', // 원본 비율 유지
+              height: 'auto' // 원본 비율 유지
+          }}/>
+        </div>
+
+        {/* 로그인 및 회원가입 버튼 컨테이너 */}
+        <div className="flex flex-col items-start mt-10 md:mt-0">
+          <div className="text-6xl font-bold text-[#fc487e] 2xl:text-9xl">건대의<br/>모든 장소!</div>
+          <div className="text-lg text-[#404040] mt-10">
+              건대생들이 구석구석 만들어 가는 지도<br/>나만의 장소를 공유해 보세요.
+          </div>
+          <div className='flex flex-row items-center justify-center mt-10'>
+            <button className="px-6 py-2 border-2 border-[#fc487e] text-pink-500 rounded-lg m-3" onClick={handleLoginModal}>로그인하고 이용하기</button>
+            <Link href="/main">
+              <div className="px-6 py-2 border-2 border-transparent bg-[#fc487e] text-white rounded-lg m-3">로그인없이 이용하기</div>
+            </Link>
+          </div>  
+          <div className='flex flex-row items-center justify-center w-full'>
+            <div className="mt-4 text-gray-600">계정이 없나요? <span className="text-[#fc487e] cursor-pointer">회원가입하기</span></div>
+          </div>  
+        </div>
       </div>
       {isLoginMoalOpen && <LoginModal onBack={handleBack} />}
-      <div className="absolute left-[1272px] top-[859px] w-[226px] h-[22px] flex">
-        <div className="absolute -translate-x-1/2 left-[calc(50%+-55px)] top-0 text-[18px] text-[#5e5e5e] whitespace-nowrap">계정이 없나요?</div>
-        <button className="absolute left-[calc(50%+55px)] top-0 text-[18px] text-decoration-[underline] text-[#5e5e5e] whitespace-nowrap">회원가입하기</button>
-      </div>
+    </div>
   </>
   );
 }
