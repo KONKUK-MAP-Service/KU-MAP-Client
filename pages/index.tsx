@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import MainLoginModal from '@/components/login/mainLoginModal';
+import LandingHeader from '@/components/common/LandingHeader';
 
 export default function Home({ projects }: any) {
   const [isLoginMoalOpen, setIsLoginModalOpen] = useState(false);
@@ -20,7 +21,8 @@ export default function Home({ projects }: any) {
 
   return (
   <> 
-    <div className="relative flex justify-center items-center min-h-screen bg-gray-50">
+    <div className="relative flex justify-center items-center min-h-screen">
+      <LandingHeader />
       <div className="flex flex-col md:flex-row items-center justify-around w-full">
         {/* 이미지와 텍스트 컨테이너 */}
         <div className="flex flex-col items-center ml-20">
