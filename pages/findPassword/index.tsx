@@ -2,12 +2,14 @@ import LandingHeader from "@/components/common/LandingHeader";
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
 import { useState } from "react";
+import PasswordNotifyModal from "@/components/common/passwordNotifyModal";
 
-const SignupPage = () => {
+function SignupPage() {
   const router = useRouter();
   const [isChecked, setIsChecked] = useState(false);
   const [isUserIdValid, setIsUserIdValid] = useState(false);
   const [isEmailValid, setIsEmailValid] = useState(false);
+  const [isPassowrdNotifyModalOpen, setIsPasswordNotifyModalOpen] = useState(false); // 비밀번호 찾기 모달창 열기
 
   const handleUserIdChange = (event: any) => {
     const id = event.target.value;
@@ -44,21 +46,18 @@ const SignupPage = () => {
     const data = Object.fromEntries(formData.entries()); // FormData를 일반 객체로 변환
 
     try {
-      const url = process.env.NEXT_PUBLIC_API_URL+'/users/join'; //TODO: REST API 엔드포인트 URL 변경
-      const response = await fetch(url, { // REST API 엔드포인트로 POST 요청 보내기
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data), // JavaScript 객체를 JSON 문자열로 변환
+      const url = process.env.NEXT_PUBLIC_API_URL + '/health'; //TODO: REST API 엔드포인트 URL 변경
+      const response = await fetch(url, {
+        method: 'GET'
       });
+
+      setIsPasswordNotifyModalOpen(true); // 비밀번호 찾기 모달창 열기
 
       if (!response.ok) {
         throw new Error(`Error: ${response.statusText}`);
       }
 
       const result = await response.json(); // 서버 응답을 JSON으로 파싱
-      router.push('/');
     } catch (error) {
       console.error('Submission failed', error);
       // 실패 처리 로직
@@ -68,36 +67,37 @@ const SignupPage = () => {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen px-4 sm:px-6 lg:px-8">
       <LandingHeader />
+      {isPassowrdNotifyModalOpen && <PasswordNotifyModal />}
       <h2 className="title-landing">
-          비밀번호 찾기
+        비밀번호 찾기
       </h2>
       <div className="form-landing max-w-2xl">
-          <div className="m-10 flex flex-col items-center justify-center">
-            <div className="text-base text-[#404040]">가입시 등록한 아이디와 비밀번호를 입력해주세요.</div>
-            <div className="text-base text-[#404040]">등록한 이메일로 임시 비밀번호가 전송됩니다.</div>
+        <div className="m-10 flex flex-col items-center justify-center">
+          <div className="text-base text-[#404040]">가입시 등록한 아이디와 비밀번호를 입력해주세요.</div>
+          <div className="text-base text-[#404040]">등록한 이메일로 임시 비밀번호가 전송됩니다.</div>
+        </div>
+        <form className="mt-8 space-y-4" onSubmit={handleSubmit}>
+          <div>
+            <span className="text-lg text-[#404040]">아이디</span>
+            <input id="id" name="userId" type="text" autoComplete="username" pattern="[A-Za-z0-9]{2,8}" required
+              className="infoSignup mt-1" placeholder="영어 또는 숫자 2자 이상"
+              onChange={handleUserIdChange} />
           </div>
-          <form className="mt-8 space-y-4" onSubmit={handleSubmit}>
-              <div>
-                  <span className="text-lg text-[#404040]">아이디</span>
-                  <input id="id" name="userId" type="text" autoComplete="username" pattern="[A-Za-z0-9]{2,8}" required 
-                  className="infoSignup mt-1" placeholder="영어 또는 숫자 2자 이상"
-                  onChange={handleUserIdChange}/>
-              </div>
-              <div>
-                  <span className="text-lg text-[#404040] mt-10">이메일</span>
-                  <input id="email-address" name="email" type="email" autoComplete="email" required 
-                  className="infoSignup" placeholder="이메일 주소"
-                  onChange={handleEmailChange}/>
-              </div>
-          </form>
+          <div>
+            <span className="text-lg text-[#404040] mt-10">이메일</span>
+            <input id="email-address" name="email" type="email" autoComplete="email" required
+              className="infoSignup" placeholder="이메일 주소"
+              onChange={handleEmailChange} />
+          </div>
           <div className="flex items-center justify-center m-10">
-                <button type="submit" 
-                className={getButtonClasses()}
-                disabled={!isChecked}>
-                비밀번호 전송
-                </button>
+            <button type="submit"
+              className={getButtonClasses()}
+              disabled={!isChecked}>
+              비밀번호 전송
+            </button>
           </div>
-        </div> 
+        </form>
+      </div>
     </div>
   );
 }
