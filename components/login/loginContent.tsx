@@ -2,6 +2,7 @@ import React from "react";
 import Image from "next/image";
 import { useState } from "react";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 
 interface LoginProps {
@@ -75,9 +76,13 @@ const LoginContent: React.FC<LoginProps> = ({ onBack }) => {
                     <button className="mt-10 px-10 py-3 border-2 border-transparent bg-[#fc487e] text-white rounded-lg m-3" onClick={handleSubmit}>로그인</button>
                 </div>
                 <div className="flex flex-row items-center justify-center w-full">
-                    <div className="mt-10 text-lg text-gray-600">비밀번호 찾기</div>    
+                    <Link href="/findPassword">
+                        <div className="mt-10 text-lg text-gray-600 cursor-pointer">비밀번호 찾기</div>
+                    </Link>    
                     <div className="mt-10 mx-2 text-lg text-gray-600">|</div>
-                    <div className="mt-10 text-lg text-gray-600">회원가입하기</div>
+                    <Link href="/signup">
+                        <div className="mt-10 text-lg text-gray-600 cursor-pointer">회원가입하기</div>
+                    </Link>
                 </div>    
             </div>    
         </>

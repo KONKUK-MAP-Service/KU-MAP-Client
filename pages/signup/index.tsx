@@ -56,7 +56,7 @@ const SignupPage = () => {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen px-4 sm:px-6 lg:px-8">
       <LandingHeader />
-      <div className="w-full max-w-4xl p-8 bg-white shadow-md overflow-hidden sm:rounded-lg">
+      <div className="w-full max-w-4xl p-8 bg-white shadow-md overflow-hidden rounded-xl sm:rounded-lg">
         <h2 className="text-center text-3xl leading-9 font-extrabold text-gray-900">
           회원가입
         </h2>
