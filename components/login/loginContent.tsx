@@ -9,7 +9,7 @@ interface LoginProps {
 }
 
 const LoginContent: React.FC<LoginProps> = ({ onBack }) => {
-    const [userId, setUserId] = useState('');
+    const [userName, setUserName] = useState('');
     const [password, setPassword] = useState('');
     const router = useRouter();
 
@@ -18,7 +18,7 @@ const LoginContent: React.FC<LoginProps> = ({ onBack }) => {
         event.preventDefault();
 
         const data = {
-            userId: userId,
+            userName: userName,
             password: password
         };
 
@@ -34,6 +34,7 @@ const LoginContent: React.FC<LoginProps> = ({ onBack }) => {
             });
 
             if (!response.ok) {
+                console.log(response);
                 throw new Error(`Error: ${response.statusText}`);
             }
 
@@ -62,7 +63,7 @@ const LoginContent: React.FC<LoginProps> = ({ onBack }) => {
                 <input id="id" name="userId" type="text" autoComplete="username" pattern="[A-Za-z0-9]{2,8}"
                  required className="infoSignup mt-1" placeholder="아이디를 입력해주세요"
                  onChange={(e) => {
-                  setUserId(e.target.value);
+                  setUserName(e.target.value);
                 }}/>
                 <div className="text-lg text-[#404040] mt-2">비밀번호</div>
                 <input id="password" name="password" type="password" pattern="[A-Za-z0-9]{8,20}" autoComplete="current-password"
