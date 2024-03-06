@@ -31,60 +31,180 @@ body {
   .header-nav div {
     @apply cursor-pointer text-base hover:text-blue-700;
   }
-  .self-introduce-title {
-    @apply font-bold pb-1 text-black;
+
+  .modal {
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+  }
+  
+  .modal-input,
+  .modal-textarea {
+    width: 100%;
+    padding: 10px;
+    background-color: #fafafa;
+    margin-top: 8px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    border: 2px solid #e6e6e6;
+  }
+  
+  .modal-file-input {
+    margin-top: 8px;
+    margin-bottom: 10px;
+  }
+  
+  .image-preview {
+    width: 100%;
+    height: auto;
+    margin-bottom: 10px;
+  }
+  
+  .submit-button {
+    background-color: pink;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
   }
 
-  .self-introduce-content {
-    @apply ml-3 mb-2;
+  .overlay {
+    position: fixed; /* 전체 화면에 고정 */
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5); /* 반투명 배경 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 40; /* 다른 요소들 보다 위에 */
   }
 
-  .main-introduce-title {
-    @apply text-blue-800 text-xl font-medium mb-3;
+  .loginModal {
+    /* 배경 */
+    background-color: white;
+    /* 모달 크기 */
+    width: 100%;
+    max-width: 35%; /* 최대 너비 */
+    height: 100%;
+    max-height: 70%; /* 최대 높이 */
+    /* 모달 위치 */
+    position: fixed;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    /* 패딩과 마진 */
+    padding: 20px;
+    /* 그림자 */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    /* 기타 */
+    border-radius: 50px;
+    z-index: 50;
   }
 
-  .main-introduce-icon {
-    @apply w-12 h-12 inline-flex items-center justify-center rounded-full bg-white border border-blue-200 text-blue-500 mb-5;
+  .notifyModal {
+    /* 배경 */
+    background-color: white;
+    /* 모달 크기 */
+    width: 100%;
+    max-width: 20%; /* 최대 너비 */
+    height: 100%;
+    max-height: 20%; /* 최대 높이 */
+    /* 모달 위치 */
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    /* 패딩과 마진 */
+    padding: 20px;
+    /* 그림자 */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    /* 기타 */
+    border-radius: 50px;
+    z-index: 50;
   }
 
-  .main-introduce-container {
-    @apply flex-grow bg-brand60 p-5 w-full bg-opacity-60 rounded-md;
+
+  .infoInput {
+    padding: 10px;
+    background-color:  #fafafa;
+    margin-top: 8px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    border: 2px solid #e6e6e6;
   }
 
-  .main-introudce-link {
-    @apply hover:text-brand100 cursor-pointer;
+  .infoSignup{
+    appearance: none;
+    border-radius: none;
+    position: relative; /* 'relative'는 'position' 속성에 사용되어야 합니다. */
+    width: 100%;
+    padding: 10px; /* 원래의 두 배 값으로 설정 */
+    border: 1px solid #e6e6e6;
+    border-radius: 4px;
+    background-color: #fafafa;
+    color: #404040;
+    outline-color: #9e67f7;
+  }
+  
+  .header-landing{
+    position: fixed;
+    top: 5%;
+    left: 5%;
+    z-index: 40;
+  }
+  
+  .title-landing{
+    position: fixed;
+    font-size: 40px;
+    color: black;
+    top: 10%;
+    text-align: center;
+    text-size-adjust: 100%;
   }
 
-  .main-skills-container {
-    @apply flex relative pt-10 pb-20 sm:items-center sm:aspect-w-16 sm:aspect-h-9 mx-auto;
+  .form-landing{
+    width: 100%;
+    padding: 20px;
+    background-color: white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 50px;
+    border: 2px solid #e6e6e6;
   }
 
-  .main-skills-icons-container {
-    @apply flex-shrink-0 w-20 p-3  h-20  text-blue-500 rounded-full inline-flex items-center justify-center;
+  .modal-button{
+    padding: 5px 20px;
+    border:  1px solid #fc487e;
+    border-radius: 30px;
+    background-color: white;
+    cursor: pointer;
+    text-align: center;
+    color: #fc487e;
   }
 
-  .core-experience-container {
-    @apply xl:w-1/4 lg:w-1/2 md:w-full px-8 py-6 border-l-2 border-gray-200 border-opacity-60;
+  .profile-header{
+    position: fixed;
+    top: 0%;
+    left: 0%;
+    z-index: 40;
+    background-color: white;
+    border: 2px solid #e6e6e6;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0px 0px 45px 45px;
   }
 
-  .tacku-table-button {
-    @apply flex py-2 p-2 text-base bg-blue-100 text-blue-500 focus:outline-none hover:bg-white hover:border-gray-400 hover:border hover:text-gray-700 rounded;
-  }
-
-  .hospital-button {
-    @apply flex py-2 p-2 text-base bg-blue-100 text-blue-500 focus:outline-none hover:bg-white hover:border-gray-400 hover:border hover:text-gray-700 rounded;
-  }
-
-  .etc-skills-container {
-    @apply py-8 flex flex-wrap md:flex-nowrap;
-  }
-
-  .etc-skills-container span {
-    @apply text-lg text-center;
-  }
-
-  .etc-skills-container h2 {
-    @apply text-base bg-gray-200 w-auto inline-block px-2 rounded-md;
+  .my-marker{
+    position: fixed;
+    top: 0%;
+    right: 0%;
+    z-index: 40;
+    background-color: white;
+    border: 2px solid #e6e6e6;
+    align-items: center;
+    justify-content: center;
+    border-radius: 45px;
   }
 }
 
