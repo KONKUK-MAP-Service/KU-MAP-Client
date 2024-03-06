@@ -19,13 +19,12 @@ const LoginContent: React.FC<LoginProps> = ({ onBack }) => {
         event.preventDefault();
 
         const data = {
-            userName: userName,
+            username: userName,
             password: password
         };
 
         try {
-            const url = process.env.NEXT_PUBLIC_API_URL+'/users/login';
-            console.log(data);
+            const url = process.env.NEXT_PUBLIC_API_URL+'/login';
             const response = await fetch(url, {
                 method: 'POST',
                 headers: {
@@ -40,11 +39,14 @@ const LoginContent: React.FC<LoginProps> = ({ onBack }) => {
             }
 
             const result = await response.json();
-            console.log(result);
-            var token = response.headers.get('Authorization');
-            if (token) {
-                token = token.split('Bearer ')[1];
-                localStorage.setItem('token', token);
+
+            var refreshToken = result.refreshToken;
+            var accessToken = result.accessToken;
+
+            
+            if (refreshToken && accessToken) {
+                sessionStorage.setItem('refreshToken', refreshToken);
+                sessionStorage.setItem('accessToken', accessToken);
             }
             router.push('/main');
         } catch (error) {
