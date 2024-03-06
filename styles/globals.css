@@ -182,6 +182,30 @@ body {
     text-align: center;
     color: #fc487e;
   }
+
+  .profile-header{
+    position: fixed;
+    top: 0%;
+    left: 0%;
+    z-index: 40;
+    background-color: white;
+    border: 2px solid #e6e6e6;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0px 0px 45px 45px;
+  }
+
+  .my-marker{
+    position: fixed;
+    top: 0%;
+    right: 0%;
+    z-index: 40;
+    background-color: white;
+    border: 2px solid #e6e6e6;
+    align-items: center;
+    justify-content: center;
+    border-radius: 45px;
+  }
 }
 
 /* ------------------------기존코드  */
