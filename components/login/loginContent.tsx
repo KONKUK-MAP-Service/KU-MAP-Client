@@ -3,6 +3,7 @@ import Image from "next/image";
 import { useState } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import instance from "@/api/instance";
 
 
 interface LoginProps {
@@ -34,8 +35,8 @@ const LoginContent: React.FC<LoginProps> = ({ onBack }) => {
             });
 
             if (!response.ok) {
-                console.log(response);
-                throw new Error(`Error: ${response.statusText}`);
+                alert('아이디 또는 비밀번호가 일치하지 않습니다.');
+                router.push('/');
             }
 
             const result = await response.json();
@@ -48,9 +49,26 @@ const LoginContent: React.FC<LoginProps> = ({ onBack }) => {
                 sessionStorage.setItem('refreshToken', refreshToken);
                 sessionStorage.setItem('accessToken', accessToken);
             }
-            router.push('/main');
         } catch (error) {
-            console.error('Submission failed', error);
+            alert('서버 오류가 발생했습니다.');
+            router.push('/');
+            return;
+        }
+
+        //TODO: 로그인 성공 시, 서버로부터 사용자 정보를 받아와서 sessionStorage에 저장
+        try {
+            const url = process.env.NEXT_PUBLIC_API_URL+'/userinfo';
+            const response = await instance.get(url);
+            console.log(response);
+            if (response.status === 200) {
+                alert('로그인 성공');
+                router.push('/main');
+            }
+        } catch (error) {
+            console.log(error);
+            alert('서버 오류가 발생했습니다.');
+            router.push('/');
+            return;
         }
 
     };

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Image from 'next/image';
+import Link from "next/link";
 
 export default function Header() {
   const [isLogin, setIsLogin] = useState(false);
@@ -17,17 +18,18 @@ export default function Header() {
 
   return (
     <header className="profile-header min-h-[50px] min-w-[170px] flex flex-row">
-      <div className="rounded-full overflow-hidden w-[40px] h-[40px] border-2 border-gray-400">
-        <Image 
-          src={profileImageUrl}
-          alt="profile"
-          width={40}
-          height={40}
+      <Link href="/mypage" className="flex flex-row">
+        <div className="rounded-full overflow-hidden w-[40px] h-[40px] border-2 border-gray-400">
+          <Image 
+            src={profileImageUrl}
+            alt="profile"
+            width={40}
+            height={40}
 
-        />
-      </div>
-      <span className="m-2">{userName}</span>
-      <span>님</span>
+          />
+        </div>
+        <span className="m-2">{userName} 님</span>
+      </Link>  
     </header>
   );
 }

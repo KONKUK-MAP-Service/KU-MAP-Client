@@ -22,7 +22,7 @@ export default function Main({ projects }: any) {
   const [selectedPage, setSelectedPage] = useState<number>(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isMarkerOpen, setIsMarkerOpen] = useState(false);
-
+  
   const handleListItemClick = (item: ListItemProps) => {
     setSelectedItem(item);
   };
@@ -51,8 +51,8 @@ export default function Main({ projects }: any) {
     kakaoMapScript.async = false
     kakaoMapScript.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=`+process.env.NEXT_PUBLIC_API_KEY+`&autoload=false&libraries=services`
     document.head.appendChild(kakaoMapScript)
-    
   
+
     const onLoadKakaoAPI = () => {
       window.window.kakao.maps.load(() => {
         var container = document.getElementById('map');
@@ -160,7 +160,7 @@ export default function Main({ projects }: any) {
           date: '',
           isBookmarked: false
         }}/>}
-        <Header user="홍길동" profileImage="/images/profile.png"/>
+        <Header />
         {isMarkerOpen && <MarkerRegisterButton onClick={handleMarkerRegister} />}
         <UserMarker />
         <div id="map" className="w-full h-screen">
