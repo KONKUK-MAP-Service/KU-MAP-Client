@@ -1,5 +1,6 @@
 import React from "react";
 import Image from "next/image";
+import Heart from "../button/heart";
 
 interface HeartButtonProps {
   isSelected: boolean;
@@ -7,11 +8,11 @@ interface HeartButtonProps {
 
 const HeartButton: React.FC<HeartButtonProps> = ({ isSelected }) => {
   return (
-    <button className="w-[100px] h-[32px] bg-white rounded-30px flex justify-center items-center">
-      <div className="w-[72px] h-[24px] flex justify-center items-center">
-        <Image src={isSelected ? "/images/heart-selected.png" : "/images/heart.png"} alt="Heart" width={24} height={24} />
-        <div className="text-[#222] text-[14px]">좋아요</div>
-      </div>
+    <button className="common-button flex flex-row">
+      <div className="relative w-[24px] h-[24px] flex justify-center items-center">
+          <Heart postId={1} initialsLiked={isSelected}  />
+      </div>  
+      <span className="text-sm text-[#222] 2xl: text-base mx-2">좋아요</span>
     </button>
   );
 };
