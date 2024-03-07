@@ -6,7 +6,7 @@ import Header from '@/components/main/UserProfile';
 import MarkerList from '@/components/main/MarkerList';
 import UserMarker from '@/components/main/UserMarker';
 import LocationInfo from '@/components/main/LocationInfo';
-import MapRegisterModal from '@/components/modal/MapRegisterModal';
+import MapRegisterModal from '@/components/main/MapRegisterModal';
 import MarkerRegisterButton from '@/components/button/MarkerRegisterButton';
 
 declare global {
@@ -41,6 +41,13 @@ export default function Main({ projects }: any) {
   }
 
   const items: ListItemProps[] = [
+    {itemId: 1, title: '서울숲', subtitle: '서울특별시 성동구 성수동1가 만약에 설명이 진짜 길다면 어떻게 할래\n서울특별시 성동구 성수동1가 만약에 설명이 진짜 길다면 어떻게 할래 서울특별시 성동구 성수동1가 만약에 설명이 진짜 길다면 어떻게 할래', date: '2021.10.10', writer: '홍길동', isBookmarked: false, onClick: () => {}},
+    {itemId: 1, title: '서울숲', subtitle: '서울특별시 성동구 성수동1가', date: '2021.10.10', writer: '홍길동', isBookmarked: false, onClick: () => {}},
+    {itemId: 1, title: '서울숲', subtitle: '서울특별시 성동구 성수동1가', date: '2021.10.10', writer: '홍길동', isBookmarked: false, onClick: () => {}},
+    {itemId: 1, title: '서울숲', subtitle: '서울특별시 성동구 성수동1가', date: '2021.10.10', writer: '홍길동', isBookmarked: false, onClick: () => {}},
+    {itemId: 1, title: '서울숲', subtitle: '서울특별시 성동구 성수동1가', date: '2021.10.10', writer: '홍길동', isBookmarked: false, onClick: () => {}},
+    {itemId: 1, title: '서울숲', subtitle: '서울특별시 성동구 성수동1가', date: '2021.10.10', writer: '홍길동', isBookmarked: false, onClick: () => {}},
+    {itemId: 1, title: '서울숲', subtitle: '서울특별시 성동구 성수동1가', date: '2021.10.10', writer: '홍길동', isBookmarked: false, onClick: () => {}},
     {itemId: 1, title: '서울숲', subtitle: '서울특별시 성동구 성수동1가', date: '2021.10.10', writer: '홍길동', isBookmarked: false, onClick: () => {}},
   ];
 
