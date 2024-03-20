@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import React, { useEffect } from "react";
 import { useState } from "react";
 import PasswordNotifyModal from "@/components/common/passwordNotifyModal";
+import axios from "axios";
 
 function SignupPage() {
   const router = useRouter();
@@ -46,21 +47,21 @@ function SignupPage() {
     const data = Object.fromEntries(formData.entries()); // FormData를 일반 객체로 변환
 
     try {
-      const url = process.env.NEXT_PUBLIC_API_URL + '/health'; //TODO: REST API 엔드포인트 URL 변경
-      const response = await fetch(url, {
-        method: 'GET'
-      });
+      const url = process.env.NEXT_PUBLIC_API_URL + '/users/find-password';
+      const response = await axios.create().post(url, data); // REST API 호출
 
-      setIsPasswordNotifyModalOpen(true); // 비밀번호 찾기 모달창 열기
-
-      if (!response.ok) {
-        throw new Error(`Error: ${response.statusText}`);
+      if (response.status === 200) {
+        // 성공 처리 로직
+        setIsPasswordNotifyModalOpen(true); // 비밀번호 찾기 모달창 열기
+        return;
       }
 
-      const result = await response.json(); // 서버 응답을 JSON으로 파싱
     } catch (error) {
-      console.error('Submission failed', error);
-      // 실패 처리 로직
+      const errorMessage = (error as any).response?.data?.results?.message || 'Unknown error occurred';
+      alert(errorMessage); // 오류 메시지를 사용자에게 알림
+      
+      // 폼 데이터 초기화 로직
+      event.target.reset(); // 폼의 모든 입력 필드를 초기화
     }
   };
 
