@@ -74,7 +74,7 @@ function MyPage() {
         </aside>
 
         <main className="mypage-container w-2/5 p-4 mx-10">
-          {isNotifyModalOpen && <NotifyModal ment={ment}/>}
+          {isNotifyModalOpen && <NotifyModal ment={ment} onBack = {onBack} />}
           {selectedTab === 'password' && <PasswordValidation onPasswordSuccess={onPasswordSuccess} />}
           {selectedTab === 'profile' && <ProfileComponent onProfileChange = {onProfileChange}/>}
           {selectedTab === 'comments' && <CommentsComponent />}
@@ -96,11 +96,6 @@ function CommentsComponent() {
 function BookmarksComponent() {
   // 즐겨찾기한 마커 컴포넌트 내용
   return <div>즐겨찾기한 마커 내용</div>;
-}
-
-function LogoutComponent() {
-  // 로그아웃 컴포넌트 내용
-  return <div>로그아웃 처리</div>;
 }
 
 export default MyPage;
