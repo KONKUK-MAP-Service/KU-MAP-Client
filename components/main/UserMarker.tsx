@@ -1,16 +1,21 @@
 import React from "react";
 import Image from 'next/image';
-import Link from "next/link";
 
-export default function UserMarker() {
+interface UserMarkerProps {
+  onUserMarkerClick: () => void;
+}
+
+const UserMarker: React.FC<UserMarkerProps> = ({ onUserMarkerClick }) => {
   return (
     <div className="my-marker min-h-[50px] min-w-[150px] flex flex-row">
-      <Link href="/mypage/marker" className="flex flex-row">
+      <button className="flex flex-row" onClick={onUserMarkerClick}>
         <div className="w-[10px]" />
-        <Image src="/images/marker2.png" alt="userMarker" width={34} height={34} />
+        <Image src="/images/map-marker.png" alt="userMarker" width={34} height={34} />
         <div className="mt-2 ml-1 text-[#5e5e5e]">내 마커 관리</div>
         <div className="w-[10px]" />
-      </Link>  
+      </button>  
     </div>
   );
 }
+
+export default UserMarker;
