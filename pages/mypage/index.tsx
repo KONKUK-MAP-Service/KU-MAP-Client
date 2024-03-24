@@ -5,7 +5,7 @@ import PasswordValidation from "@/components/mypage/PasswordValidation";
 import ProfileComponent from "@/components/mypage/ProfileComponent";
 import NotifyModal from "@/components/common/NotifyModal";
 import WithdrawComponent from "@/components/mypage/WithdrawComponent";
-import instance from "@/api/instance";
+import LogoutModal from "@/components/common/LogoutModal";
 
 // 처음 접근할 때 세션에 유저 정보가 없으면 로그인 페이지로 이동
 // 세션에 유저 정보가 있으면 마이페이지를 보여줍니다.
@@ -33,6 +33,10 @@ function MyPage() {
   const onProfileChange = () => {
     setIsNotifyModalOpen(true);
     setMent('회원정보가 수정되었습니다.');
+  }
+
+  const onBack = () => {
+    window.location.reload();
   }
 
   useEffect(() => {
@@ -77,7 +81,7 @@ function MyPage() {
           {selectedTab === 'bookmarks' && <BookmarksComponent />}
           {selectedTab === 'withdrawPassword' && <PasswordValidation onPasswordSuccess={onWithdrawSuccess}/>}
           {selectedTab === 'withdraw' && <WithdrawComponent />}
-          {selectedTab === 'logout' && <LogoutComponent />}
+          {selectedTab === 'logout' && <LogoutModal onBack = {onBack}/>}
         </main>
       </div>
     </div>
