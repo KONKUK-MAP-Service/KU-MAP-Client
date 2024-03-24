@@ -151,7 +151,9 @@ body {
   }
   
   .header-landing{
-    position: relative;
+    position: fixed;
+    top: 1%;
+    left: 1%;
     margin: 3%;
   }
 

@@ -10,6 +10,10 @@ export default function Home({ projects }: any) {
   const [isLoginMoalOpen, setIsLoginModalOpen] = useState(false);
 
   const handleLoginModal = () => {
+    if (sessionStorage.getItem('accessToken')) {
+      window.location.href = '/main';
+      return;
+    }
     setIsLoginModalOpen(true);
   };
 
@@ -22,8 +26,11 @@ export default function Home({ projects }: any) {
   return (
   <> 
     <div className="relative flex justify-center items-center min-h-screen">
-      <LandingHeader />
       <div className="flex flex-col md:flex-row items-center justify-around w-full">
+        {/* 로고 */}
+        <div className="absolute top-0 left-0">
+          <LandingHeader />
+        </div>  
         {/* 이미지와 텍스트 컨테이너 */}
         <div className="flex flex-col items-center ml-20">
           <Image src={mainImage} alt="main" width={780} height={780} style={{
