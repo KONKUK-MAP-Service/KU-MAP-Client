@@ -8,7 +8,7 @@ const nextConfig = {
       "images.unsplash.com",
       "www.s3.us-west-2.amazonaws.com",
       "s3.us-west-2.amazonaws.com",
-      "i.namu.wiki"
+      "kusuk-image-bucket.s3.ap-northeast-2.amazonaws.com"
     ],
   },
 };

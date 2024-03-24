@@ -26,7 +26,7 @@ function PasswordValidation({onPasswordSuccess}: {onPasswordSuccess: () => void}
           const data = response.data.results;
           onPasswordSuccess();
         } catch (error) {
-          alert('서버 오류가 발생했습니다.');
+          alert('비밀번호가 일치하지 않습니다.');
         }
     };
 

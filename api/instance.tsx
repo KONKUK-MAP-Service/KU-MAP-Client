@@ -29,15 +29,12 @@ instance.interceptors.response.use(
   async (error) => {
     if (error.response && error.response.status === 401) {
       try {
+        const input = {
+          refreshToken: sessionStorage.getItem("refreshToken"),
+        };
         const response = await axios.post(
           process.env.REACT_APP_SERVER_API + "/users/refresh",
-          {
-            headers: {
-              "Content-Type": "application/json;charset=UTF-8",
-            },
-            withCredentials: true,
-            body: JSON.stringify({ refreshToken: sessionStorage.getItem("refreshToken") }),
-          }
+          input
         );
         if (response.status === 200) {
           const accessToken = response.data.accessToken;
