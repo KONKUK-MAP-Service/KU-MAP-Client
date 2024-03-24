@@ -14,7 +14,7 @@ instance.interceptors.request.use(
     const newConfig = { ...config };
     const token = sessionStorage.getItem("accessToken");
     if (token) {
-      newConfig.headers.Authorization = '${token}';
+      newConfig.headers.Authorization = token;
     }
     return newConfig;
   },
@@ -27,23 +27,20 @@ instance.interceptors.response.use(
     return response;
   },
   async (error) => {
-    if (error.response && error.response.data.code === 3003) {
+    if (error.response && error.response.status === 401) {
       try {
-        const response = await axios.get(
-          process.env.REACT_APP_SERVER_API + "/auth/refresh",
+        const response = await axios.post(
+          process.env.REACT_APP_SERVER_API + "/users/refresh",
           {
             headers: {
               "Content-Type": "application/json;charset=UTF-8",
             },
             withCredentials: true,
+            body: JSON.stringify({ refreshToken: sessionStorage.getItem("refreshToken") }),
           }
         );
-        if (response.data.code === 1000) {
-          const accessToken = response.data.data.accessToken;
-          const userStatusString: any = sessionStorage.getItem("login_user");
-          const userStatus = JSON.parse(userStatusString);
-          userStatus.accessToken = accessToken;
-          sessionStorage.setItem("login_user", JSON.stringify(userStatus));
+        if (response.status === 200) {
+          const accessToken = response.data.accessToken;
           error.config.headers.Authorization = `Bearer ${accessToken}`;
           return axios.request(error.config);
         } else {
@@ -58,12 +55,7 @@ instance.interceptors.response.use(
       RemoveLoginStatusInSession();
       window.location.href = "/";
       return;
-    } else if (error.response && error.response.data.code === 5202) {
-      alert("등록된 지갑주소가 아닙니다. 로그아웃됩니다. ");
-      RemoveLoginStatusInSession();
-      window.location.href = "/";
-      return;
-    }
+    } 
     return Promise.reject(error);
   }
 );
