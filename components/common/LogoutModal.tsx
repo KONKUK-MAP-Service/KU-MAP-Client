@@ -1,14 +1,30 @@
 import React from "react";
 import Image from "next/image";
 import { useRouter } from "next/router";
+import instance from "@/api/instance";
 
 const NotifyModal = ({ onBack }: { onBack: () => void }) => {
 
     const router = useRouter();
 
-    const handleLogout = () => {
-        sessionStorage.clear();
-        router.push('/');
+    const handleLogout = async () => {
+        try{
+            const refreshToken = sessionStorage.getItem('refreshToken');
+            const input = {
+                refreshtoken: refreshToken
+            }
+            const url = process.env.NEXT_PUBLIC_API_URL + '/users/logout';
+            const response = await instance.patch(url, input);
+            if (response.status !== 200) {
+                alert('로그아웃에 실패했습니다.');
+                return;
+            }
+            sessionStorage.clear();
+            router.push('/');
+        } catch (error) {
+            alert('서버 오류가 발생했습니다.');
+            return;
+        }
     }
 
     return (
