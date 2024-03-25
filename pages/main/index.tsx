@@ -5,11 +5,13 @@ import { useRouter } from 'next/router';
 import Image from 'next/image';
 import UserProfile from '@/components/main/UserProfile';
 import MarkerList from '@/components/main/MarkerList';
-import UserMarker from '@/components/main/UserMarker';
+import MyMarkerFloatingButton from '@/components/main/MyMarkerFloatingButton';
 import LocationInfo from '@/components/main/LocationInfo';
 import MapRegisterModal from '@/components/main/MapRegisterModal';
-import MarkerRegisterButton from '@/components/button/MarkerRegisterButton';
+import MarkerRegisterButton from '@/components/mymarker/MarkerRegisterButton';
 import LoginModal from '@/components/login/loginModal';
+import instance from '@/api/instance';
+import { info } from 'console';
 
 
 declare global {
@@ -21,12 +23,11 @@ declare global {
 export default function Main({ projects }: any) {
   const mapRef = useRef(null);
   const router = useRouter();
-  const [selectedItem, setSelectedItem] = useState(null);
-  const [selectedPage, setSelectedPage] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isMarkerOpen, setIsMarkerOpen] = useState(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [isLogin, setIsLogin] = useState(false);
+  const [items, setItems] = useState([]); 
 
   //지도 설정
   useEffect(() => {
@@ -35,50 +36,75 @@ export default function Main({ projects }: any) {
     setIsLoginModalOpen(!accessToken);
 
     const kakaoMapScript = document.createElement('script');
-    kakaoMapScript.async = true;
+    kakaoMapScript.async = false;
     kakaoMapScript.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_API_KEY}&autoload=false&libraries=services`;
     document.head.appendChild(kakaoMapScript);
 
-    window.kakao.maps.load(() => {
-      const container = document.getElementById('map');
-      const options = {
-        center: new window.kakao.maps.LatLng(37.543536094587516, 127.07741635877292),
-        level: 3,
-      };
-      const mapInstance = new window.kakao.maps.Map(container, options);
-      mapRef.current = mapInstance;
-    
-      // 마커 이미지 설정
-      const imageSrc = '/images/map-marker.png', // 마커 이미지의 주소
-            imageSize = new window.kakao.maps.Size(35, 35), // 마커 이미지의 크기
-            imageOption = {offset: new window.kakao.maps.Point(11, 34)}; // 마커 이미지의 옵션
-      const markerImage = new window.kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
+    const onLoadKakaoAPI = () => {
+
+      window.kakao.maps.load(async () => {
+        const container = document.getElementById('map');
+        const options = {
+          center: new window.kakao.maps.LatLng(37.543536094587516, 127.07741635877292),
+          level: 3,
+        };
+        const mapInstance = new window.kakao.maps.Map(container, options);
+        mapRef.current = mapInstance;
+
+        // 마커 이미지 설정
+        const imageSrc = '/images/map-marker.png', // 마커 이미지의 주소
+              imageSize = new window.kakao.maps.Size(35, 35), // 마커 이미지의 크기
+              imageOption = {offset: new window.kakao.maps.Point(11, 34)}; // 마커 이미지의 옵션
+        const markerImage = new window.kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
+          
+        let marker = new window.kakao.maps.Marker({
+          map: mapInstance, // 마커를 표시할 지도
+          position: mapInstance.getCenter(), // 초기 마커 위치를 지도 중심으로 설정
+          image: markerImage // 마커 이미지
+        });
+
+        var content = 
+        '<div class="register-floating-button" onClick="onClick()">\n'+
+            '<div class="flex flex-row items-center justify-center">\n'+
+              '<img src="/images/register.png" alt="등록하기" width="34" height="34" />\n'+
+              '<div class="text-white font-semibold">마커 만들기</div>\n'+
+            '</div>\n'+
+        '</div> ';
+
+        var customOverlay = new window.kakao.maps.CustomOverlay({
+          position: marker.getPosition(),
+          content: content,
+          yAnchor: 1.5,
+          xAnchor: -0.3
+        });
+
+        // 지도 클릭 이벤트 리스너 등록
+        window.kakao.maps.event.addListener(mapInstance, 'click', function(mouseEvent: any) {
+          const latLng = mouseEvent.latLng;
+          
+          // 기존 마커 위치 업데이트
+          marker.setPosition(latLng);
+          mapInstance.setCenter(latLng);
+
+          customOverlay.setMap(null);
+        }); 
         
-      let marker = new window.kakao.maps.Marker({
-        map: mapInstance, // 마커를 표시할 지도
-        position: mapInstance.getCenter(), // 초기 마커 위치를 지도 중심으로 설정
-        image: markerImage // 마커 이미지
+        window.kakao.maps.event.addListener(marker, 'click', function(mouseEvent: any) {
+          mapInstance.setCenter(marker.getPosition());
+
+          customOverlay.setPosition(marker.getPosition());
+          customOverlay.setMap(mapInstance);
+        }); 
+
       });
 
-      // 지도 클릭 이벤트 리스너 등록
-      window.kakao.maps.event.addListener(mapInstance, 'click', function(mouseEvent: any) {
-        const latLng = mouseEvent.latLng;
-        
-        // 기존 마커 위치 업데이트
-        marker.setPosition(latLng);
-        mapInstance.setCenter(latLng);
+    }  
 
-        // 마커 등록 이벤트
-        if(isLogin) {
-          setIsModalOpen(true);
-        } else {
-          setIsLoginModalOpen(true);
-        }
-      });
-    });
+    kakaoMapScript.addEventListener('load', onLoadKakaoAPI)
 
     return () => {
       document.head.removeChild(kakaoMapScript);
+      
     };
   }, []);
 
@@ -107,19 +133,9 @@ export default function Main({ projects }: any) {
       <div>
         {isLoginModalOpen && <LoginModal onBack={() => setIsLoginModalOpen(false)} />}
         <MarkerList
-          items={[] /* items 배열을 여기에 추가하세요 */}
           onListItemClick={(item) => setSelectedItem(item)}
-          totalPages={5}
-          currentPage={selectedPage}
-          onPageChange={setSelectedPage}
         />
-        {selectedItem && <LocationInfo data={selectedItem} onBack={() => setSelectedItem(null)} />}
-        {isModalOpen && <MapRegisterModal onBack={() => setIsModalOpen(false)} GlobalListItemProps={{
-          title: '',
-          subtitle: '',
-          date: '',
-          isBookmarked: false
-        }} />}
+        {isModalOpen && <MapRegisterModal onBack={() => setIsModalOpen(false)} />}
         <UserProfile onUserProfileClick={() => {
           if (!isLogin) {
             setIsLoginModalOpen(true);
@@ -127,12 +143,11 @@ export default function Main({ projects }: any) {
             router.push('/mypage');
           }
         }} />
-        {isMarkerOpen && <MarkerRegisterButton onClick={() => setIsModalOpen(true)} />}
-        <UserMarker onUserMarkerClick={() => {
+        <MyMarkerFloatingButton onButtonClick={() => {
           if (!isLogin) {
             setIsLoginModalOpen(true);
           } else {
-            router.push('/mypage');
+            router.push('/mymarker');
           }
         }} />
         <div id="map" className="w-full h-screen">

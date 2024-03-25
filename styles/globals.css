@@ -127,6 +127,15 @@ body {
     z-index: 50;
   }
 
+  .register-floating-button{
+    background-color: #fc487e;
+    width: 120px;
+    height: fit-content;
+    box-shadow: #404040;
+    border-radius: 50px;
+    cursor: pointer;
+  }
+
 
   .infoInput {
     padding: 10px;
