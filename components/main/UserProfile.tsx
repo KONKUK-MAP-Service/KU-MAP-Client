@@ -14,7 +14,9 @@ const UserProfile: React.FC<UserProfileProps> = ({ onUserProfileClick }) => {
     if (loginUser) {
       const user = JSON.parse(loginUser);
       setUserName(user.nickname);
-      setProfileImageUrl(user.profileImage);
+      if (user.profileImage){
+        setProfileImageUrl(user.profileImage);
+      }
     }
   }, []);
 
