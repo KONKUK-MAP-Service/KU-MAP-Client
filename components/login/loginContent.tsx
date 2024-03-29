@@ -51,7 +51,7 @@ const LoginContent: React.FC<LoginProps> = ({ onBack }) => {
             }
         } catch (error) {
             alert('서버 오류가 발생했습니다.');
-            router.push('/');
+            window.location.href = '/';
             return;
         }
 
@@ -61,7 +61,7 @@ const LoginContent: React.FC<LoginProps> = ({ onBack }) => {
             if (response.status === 200) {
                 const user = response.data.results;
                 sessionStorage.setItem('login_user', JSON.stringify(user));
-                window.location.reload();
+                window.location.href = '/main';
             }
         } catch (error) {
             console.log(error);
