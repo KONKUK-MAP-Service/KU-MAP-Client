@@ -6,7 +6,6 @@ import Image from 'next/image';
 import UserProfile from '@/components/main/UserProfile';
 import MarkerList from '@/components/main/MarkerList';
 import MapRegisterModal from '@/components/mymarker/MapRegisterModal';
-import LoginModal from '@/components/login/loginModal';
 import instance from '@/api/instance';
 import MainPageFloatingButton from '@/components/main/MainPageFloationgButton';
 
@@ -22,18 +21,67 @@ export default function Main({ projects }: any) {
   const mapRef = useRef(null);
   const router = useRouter();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isMarkerOpen, setIsMarkerOpen] = useState(false);
-  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
-  const [isLogin, setIsLogin] = useState(false);
+  const [selectedItem, setSelectedItem] = useState(null);
   const [items, setItems] = useState([]); 
   const [longtitue, setLongtitue] = useState(0);
   const [latitude, setLatitude] = useState(0);
 
+
+  const fetchData = async () => {
+    try {
+      const endpoint = '/spot/login-all';
+      const url = `${process.env.NEXT_PUBLIC_API_URL}${endpoint}`;
+      const response = await instance.get(url); 
+      const data = response.data.results;
+      for (let i = 0; i < data.length; i++) {
+        if (data[i].isUsersOwnSpot === false) {
+          data.splice(i, 1);
+          i--;
+        }
+      }
+      setItems(data);
+      createMarkers(data);
+    } catch (error) {
+      alert('서버 오류가 발생했습니다.');
+    }
+  };
+
+  const createMarkers = (spots: any) => {
+    const mapInstance = mapRef.current; // 현재 지도 인스턴스 참조
+
+    if (mapInstance) {
+  
+      // 새로운 데이터를 기반으로 마커를 생성합니다.
+      spots.forEach((spot: ListItemProps) => {
+        const markerPosition = new window.kakao.maps.LatLng(spot.latitude, spot.longtitude);
+        const markerImage = new window.kakao.maps.MarkerImage(
+          '/images/map-own.png', // 마커 이미지의 주소
+          new window.kakao.maps.Size(35, 35), // 마커 이미지의 크기
+          {offset: new window.kakao.maps.Point(11, 34)} // 마커 이미지의 옵션
+        );
+        const marker = new window.kakao.maps.Marker({
+          position: markerPosition,
+          image: markerImage
+        });
+  
+        // 생성된 마커를 지도에 표시합니다.
+        marker.setMap(mapInstance);
+  
+        // 마커에 클릭 이벤트 등록 (선택 사항)
+        window.kakao.maps.event.addListener(marker, 'click', () => {
+          setSelectedItem(spot);
+        });
+      });
+    } else{
+      alert('지도가 로드되지 않았습니다.');
+    }
+  };
+
   //지도 설정
   useEffect(() => {
-    const accessToken = sessionStorage.getItem("accessToken");
-    setIsLogin(!!accessToken);
-    setIsLoginModalOpen(!accessToken);
+    if (sessionStorage.getItem('accessToken') === null) {
+      router.push("/main");
+    }
 
     const kakaoMapScript = document.createElement('script');
     kakaoMapScript.async = true;
@@ -50,6 +98,8 @@ export default function Main({ projects }: any) {
         };
         const mapInstance = new window.kakao.maps.Map(container, options);
         mapRef.current = mapInstance;
+
+        fetchData();
 
         // 마커 이미지 설정
         const imageSrc = '/images/map-marker.png', // 마커 이미지의 주소
@@ -143,24 +193,16 @@ export default function Main({ projects }: any) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div>
-        {isLoginModalOpen && <LoginModal onBack={() => setIsLoginModalOpen(false)} />}
         <MarkerList
           onListItemClick={(item) => setSelectedItem(item)}
+          items = {items}
         />
         {isModalOpen && <MapRegisterModal onBack={() => setIsModalOpen(false)} longtitue={longtitue} latitude={latitude}/>}
         <UserProfile onUserProfileClick={() => {
-          if (!isLogin) {
-            setIsLoginModalOpen(true);
-          } else {
-            router.push('/mypage');
-          }
+          router.push('/mypage');
         }} />
         <MainPageFloatingButton onButtonClick={() => {
-          if (!isLogin) {
-            setIsLoginModalOpen(true);
-          } else {
-            router.push('/main');
-          }
+          router.push('/main');
         }} />
         <div id="map" className="w-full h-screen">
           <div className="zoom-controls">
