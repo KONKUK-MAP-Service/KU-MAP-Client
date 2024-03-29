@@ -6,8 +6,8 @@ import ProfileComponent from "@/components/mypage/ProfileComponent";
 import NotifyModal from "@/components/common/NotifyModal";
 import WithdrawComponent from "@/components/mypage/WithdrawComponent";
 import LogoutModal from "@/components/common/LogoutModal";
+import BookmarksComponent from "@/components/mypage/BookmarksComponent";
 
-// 처음 접근할 때 세션에 유저 정보가 없으면 로그인 페이지로 이동
 // 세션에 유저 정보가 있으면 마이페이지를 보여줍니다.
 
 function MyPage() {
@@ -47,13 +47,11 @@ function MyPage() {
   },[]);
 
   return (
-    <div className="flex flex-col min-h-screen">
-      <div className="flex flex-row">
-        <LandingHeader />
-        <h1 className="header-title-landing text-3xl w-full">마이페이지</h1>
-      </div>  
-      <div className="flex flex-grow my-10 justify-center">
-        <aside className="mypage-container w-1/6 bg-white p-4">
+    <>
+    <LandingHeader />
+    <h1 className="header-title-landing text-3xl font-bold">마이페이지</h1>
+    <div className="flex flex-col md:flex-row min-h-screen">
+      <div className="mypage-container bg-white p-4 mx-10 mt-20 mb-10 md:ml-10 md:m-0">
           <nav className="flex flex-col">
             <button onClick={() => handleTabClick('password')} className={`p-2 text-start ${selectedTab === 'password' || selectedTab === 'profile' ? 'text-[#fc487e] text-bold' : ''}`}>
               회원정보 수정
@@ -71,9 +69,9 @@ function MyPage() {
               로그아웃하기
             </button>
           </nav>
-        </aside>
+      </div>
 
-        <main className="mypage-container w-2/5 p-4 mx-10">
+        <main className="mypage-container flex-1 mx-10">
           {isNotifyModalOpen && <NotifyModal ment={ment} onBack = {onBack} />}
           {selectedTab === 'password' && <PasswordValidation onPasswordSuccess={onPasswordSuccess} />}
           {selectedTab === 'profile' && <ProfileComponent onProfileChange = {onProfileChange}/>}
@@ -83,19 +81,14 @@ function MyPage() {
           {selectedTab === 'withdraw' && <WithdrawComponent />}
           {selectedTab === 'logout' && <LogoutModal onBack = {onBack}/>}
         </main>
-      </div>
     </div>
+    </>
   );
 }
 
 function CommentsComponent() {
   // 내가 단 댓글 컴포넌트 내용
   return <div>내가 단 댓글 내용</div>;
-}
-
-function BookmarksComponent() {
-  // 즐겨찾기한 마커 컴포넌트 내용
-  return <div>즐겨찾기한 마커 내용</div>;
 }
 
 export default MyPage;

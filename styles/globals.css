@@ -159,16 +159,33 @@ body {
   }
   
   .header-landing{
-    position: fixed;
+    width: fit-content;
     top: 1%;
     left: 1%;
     margin: 3%;
   }
 
   .header-title-landing{
-    position: relative;
+    width: 100%; 
+    position: absolute;
+    top: 1%;
+    left: 50%; 
     margin: 3%;
+    transform: translateX(-50%);
     text-align: center;
+  }
+
+  @media (max-width: 500px) {
+    .header-landing {
+      width: 100%;
+      justify-items: center;
+    }
+    .header-title-landing{
+      width: 100%;
+      margin-top: 60px;
+      padding: 10px;
+      text-align: center;
+    }
   }
   
   .title-landing{
@@ -205,6 +222,7 @@ body {
     background-color: white;
     border: 1px solid #e6e6e6;
     border-radius: 50px;
+    height: fit-content;
     padding: 20px;
   }
 
@@ -288,6 +306,18 @@ body {
     position: inherit;
     height: 100%;
     max-height: 70%;
+  }
+
+  .my-location-list{
+    position: inherit;
+    height: 100%;
+    max-height: 90%;
+  }
+
+  .my-pagination{
+    position: inherit;
+    height: 10%;
+    top: 90%;
   }
 
   .common-button{

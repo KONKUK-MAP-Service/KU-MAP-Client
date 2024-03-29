@@ -19,6 +19,21 @@ declare global {
     onClick: () => void;
   };
 
+  type MyPageListItemProps = {
+    spotId: number;
+    spotName: string;
+    spotImageurl: string;
+    review: string;
+    createDate: string;
+    author: string;
+    bookmark: boolean;
+    like: boolean;
+    totalElements: number;
+    page: number;
+    size: number;
+    totalPages: number;
+  };
+
   type commonProps = {
     spotId: number;
     initialState: boolean;
