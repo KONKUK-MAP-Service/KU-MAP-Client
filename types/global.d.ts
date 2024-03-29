@@ -13,7 +13,15 @@ declare global {
     latitude: number;
     review: string;
     createDate: string;
+    author: string;
+    bookmark: boolean;
+    like: boolean;
     onClick: () => void;
+  };
+
+  type commonProps = {
+    spotId: number;
+    initialState: boolean;
   };
     
 }

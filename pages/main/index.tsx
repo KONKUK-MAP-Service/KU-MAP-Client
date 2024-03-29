@@ -27,13 +27,46 @@ export default function Main({ projects }: any) {
 
   const fetchData = async () => {
     try {
-      const endpoint = isLogin ? '/spot/login-all' : '/spot/all';
+      const endpoint = sessionStorage.getItem('accessToken') ? '/spot/login-all' : '/spot/all';
       const url = `${process.env.NEXT_PUBLIC_API_URL}${endpoint}`;
       const response = await instance.get(url); 
       const data = response.data.results;
       setItems(data);
+
+      createMarkers(data);
     } catch (error) {
       alert('서버 오류가 발생했습니다.');
+    }
+  };
+
+  const createMarkers = (spots: any) => {
+    const mapInstance = mapRef.current; // 현재 지도 인스턴스 참조
+
+    if (mapInstance) {
+  
+      // 새로운 데이터를 기반으로 마커를 생성합니다.
+      spots.forEach((spot: ListItemProps) => {
+        const markerPosition = new window.kakao.maps.LatLng(spot.latitude, spot.longtitude);
+        const markerImage = new window.kakao.maps.MarkerImage(
+          '/images/map-own.png', // 마커 이미지의 주소
+          new window.kakao.maps.Size(35, 35), // 마커 이미지의 크기
+          {offset: new window.kakao.maps.Point(11, 34)} // 마커 이미지의 옵션
+        );
+        const marker = new window.kakao.maps.Marker({
+          position: markerPosition,
+          image: markerImage
+        });
+  
+        // 생성된 마커를 지도에 표시합니다.
+        marker.setMap(mapInstance);
+  
+        // 마커에 클릭 이벤트 등록 (선택 사항)
+        window.kakao.maps.event.addListener(marker, 'click', () => {
+          setSelectedItem(spot);
+        });
+      });
+    } else{
+      alert('지도가 로드되지 않았습니다.');
     }
   };
 
@@ -61,22 +94,6 @@ export default function Main({ projects }: any) {
 
         fetchData();
 
-          // 받아온 장소 리스트로 마커 생성
-        items.forEach((spot: ListItemProps) => {
-            const markerPosition = new window.kakao.maps.LatLng(spot.latitude, spot.longtitude);
-            const imageSrc = '/images/map-own.png', // 마커 이미지의 주소
-                  imageSize = new window.kakao.maps.Size(35, 35), // 마커 이미지의 크기
-                  imageOption = {offset: new window.kakao.maps.Point(11, 34)}; // 마커 이미지의 옵션
-            const markerImage = new window.kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
-            const marker = new window.kakao.maps.Marker({
-              position: markerPosition,
-              image: markerImage
-            });
-            
-            // 생성된 마커를 지도에 표시
-            marker.setMap(mapInstance);
-        });
- 
         // 마커 이미지 설정
         const imageSrc = '/images/map-marker.png', // 마커 이미지의 주소
               imageSize = new window.kakao.maps.Size(35, 35), // 마커 이미지의 크기

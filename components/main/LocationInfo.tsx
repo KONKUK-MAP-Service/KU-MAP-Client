@@ -9,7 +9,7 @@ interface LocationInfoProps {
 }
 
 const LocationInfo: React.FC<LocationInfoProps> = ({ data, onBack }) => {
-  const { spotName, review, createDate, images } = data;  
+  const { spotId, spotName, review, createDate, images, bookmark, like } = data;  
   const date = createDate.split('T')[0];
 
   return (
@@ -33,9 +33,9 @@ const LocationInfo: React.FC<LocationInfoProps> = ({ data, onBack }) => {
           </div>  
           <span className="m-4 p-4 w-full max-h-[20%] text-[#222] overflow-auto">{review}</span>
           <div className="w-full h-[32px] flex justify-center items-center">
-            <HeartButton isSelected={false}/>
+            <HeartButton isSelected={like}/>
             <div className="w-4"></div>
-            <BookMarkButton isSelected={true}/>
+            <BookMarkButton spotId={spotId} initialState={bookmark}/>
           </div>
         </div>
         

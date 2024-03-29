@@ -1,22 +1,47 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
+import instance from '@/api/instance';
 
 // 북마크 버튼 컴포넌트
-const BookmarkButton = (postId: any, initialIsBookmarked: boolean) => {
-  const [isBookmarked, setIsBookmarked] = useState(initialIsBookmarked);
+const Bookmark: React.FC<commonProps> = ({ spotId, initialState}) => {
+  const [isBookmarked, setIsBookmarked] = useState(initialState);
+  const [bookmarkImage, setBookmarkImage] = useState('/images/bookmark.png');
 
-  const bookmarkImage = isBookmarked ? "/images/bookmark-selected.png" : "/images/bookmark.png";
+  useEffect(() => {
+    const bookmarkImage = isBookmarked ? "/images/bookmark-selected.png" : "/images/bookmark.png";
+    setBookmarkImage(bookmarkImage);
+  }, [isBookmarked]);
 
   const toggleBookmark = async () => {
-    console.log('toggleBookmark');
-    // 낙관적 UI 업데이트
     setIsBookmarked(!isBookmarked);
 
+    if(sessionStorage.getItem('accessToken') === null) {
+      alert('로그인이 필요합니다.');
+      window.location.reload();
+      return;
+    }
+
     try {
-      // 여기에서 API 호출을 통해 서버에 상태를 업데이트합니다.
-      // await updateBookmarkAPI(postId, !isBookmarked);
+      const data = {
+        spotId: spotId,
+      };
+
+      if(isBookmarked) {
+        const url = process.env.NEXT_PUBLIC_API_URL+'/bookmark/delete';
+        const response = await instance.delete(url, {data});
+        if(response.status === 200) {
+          return;
+        }
+      }else{
+        console.log(data);
+        const url = process.env.NEXT_PUBLIC_API_URL+'/bookmark/add';
+        const response = await instance.post(url, data);
+        if(response.status === 200) {
+          return;
+        }
+      }
+
     } catch (error) {
-      // 오류 발생 시, UI를 이전 상태로 롤백합니다.
       setIsBookmarked(isBookmarked);
       console.error('Bookmark update failed', error);
     }
@@ -27,10 +52,4 @@ const BookmarkButton = (postId: any, initialIsBookmarked: boolean) => {
   );
 };
 
-// 서버에 북마크 상태를 업데이트하는 함수
-async function updateBookmarkAPI(postId: number, shouldBookmark: boolean) {
-    // 이곳에 실제 API 호출 코드를 작성합니다.
-    // 예시: axios.post('/api/bookmark', { postId, shouldBookmark });
-}
-
-export default BookmarkButton;
+export default Bookmark;
