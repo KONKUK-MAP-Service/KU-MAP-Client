@@ -43,7 +43,6 @@ const Bookmark: React.FC<commonProps> = ({ spotId, initialState}) => {
 
     } catch (error) {
       setIsBookmarked(isBookmarked);
-      console.error('Bookmark update failed', error);
     }
   };
 
