@@ -8,12 +8,14 @@ import MarkerList from '@/components/main/MarkerList';
 import MapRegisterModal from '@/components/mymarker/MapRegisterModal';
 import instance from '@/api/instance';
 import MainPageFloatingButton from '@/components/main/MainPageFloationgButton';
-
+import MarkerDeleteNotify from '@/components/mymarker/MarkerDeleteNotify';
 
 declare global {
   interface Window {
     kakao: any;
     onMarkerRegisterClick: () => void;
+    onMarkerChangeClick: () => void;
+    onMarkerDeleteClick: () => void;
   }
 }
 
@@ -25,6 +27,7 @@ export default function Main({ projects }: any) {
   const [items, setItems] = useState([]); 
   const [longtitue, setLongtitue] = useState(0);
   const [latitude, setLatitude] = useState(0);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
 
   const fetchData = async () => {
@@ -66,11 +69,44 @@ export default function Main({ projects }: any) {
   
         // 생성된 마커를 지도에 표시합니다.
         marker.setMap(mapInstance);
+        
+        var content = 
+        '<div class="flex flex-row">\n'+
+          '<div class="modal-button" onclick="window.onMarkerDeleteClick()">\n'+
+                '<div class="font-semibold text-center">삭제</div>\n'+
+          '</div> \n'+
+          '<div class="modal-button ml-5" onclick="window.onMarkerChangeClick()">\n'+
+                '<div class="font-semibold">수정</div>\n'+
+          '</div> \n'+
+        '</div> ';  
+
+        var customOverlay = new window.kakao.maps.CustomOverlay({
+          position: marker.getPosition(),
+          content: content,
+          yAnchor: 2,
+          clickable: true
+        });
+        
+        window.onMarkerChangeClick = () => {
+          setIsModalOpen(true);
+          customOverlay.setMap(null);
+        };
+
+        window.onMarkerDeleteClick = () => {
+          setIsDeleteModalOpen(true);
+          customOverlay.setMap(null);
+        };
   
         // 마커에 클릭 이벤트 등록 (선택 사항)
         window.kakao.maps.event.addListener(marker, 'click', () => {
           setSelectedItem(spot);
+          customOverlay.setMap(mapInstance);
         });
+
+        window.kakao.maps.event.addListener(mapInstance, 'click', () => {
+          customOverlay.setMap(null);
+        });
+
       });
     } else{
       alert('지도가 로드되지 않았습니다.');
@@ -197,6 +233,7 @@ export default function Main({ projects }: any) {
           onListItemClick={(item) => setSelectedItem(item)}
           items = {items}
         />
+        {isDeleteModalOpen && selectedItem && <MarkerDeleteNotify spotId={selectedItem.spotId} />}
         {isModalOpen && <MapRegisterModal onBack={() => setIsModalOpen(false)} longtitue={longtitue} latitude={latitude}/>}
         <UserProfile onUserProfileClick={() => {
           router.push('/mypage');

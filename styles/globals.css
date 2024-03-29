@@ -111,8 +111,7 @@ body {
     /* 모달 크기 */
     width: 100%;
     max-width: 25%; /* 최대 너비 */
-    height: 100%;
-    max-height: 25%; /* 최대 높이 */
+    height: fit-content;
     /* 모달 위치 */
     position: fixed;
     top: 50%;
@@ -191,6 +190,8 @@ body {
   }
 
   .modal-button{
+    width: fit-content;
+    height: fit-content;
     padding: 5px 20px;
     border:  1px solid #fc487e;
     border-radius: 30px;
