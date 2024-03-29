@@ -21,7 +21,7 @@ const LocationListItem: React.FC<MyPageListItemProps> = ({ spotId, spotName, cre
             <div className='inherit max-h-[40%] mr-3'>
                 <Heart spotId={spotId} initialState={like}/>
             </div>
-            <div className='relative max-h-[100px] w-[20%]'>
+            <div className='relative max-h-[100px] w-[50%] sm:w-[20%]'>
                 <Image src={spotImageurl} alt={spotName} fill style={{objectFit: 'contain'}}/>
             </div>
         </div>

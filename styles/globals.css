@@ -163,6 +163,8 @@ body {
     top: 1%;
     left: 1%;
     margin: 3%;
+    z-index: 10;
+    position: absolute;
   }
 
   .header-title-landing{
@@ -179,12 +181,13 @@ body {
     .header-landing {
       width: 100%;
       justify-items: center;
+      position: relative;
     }
     .header-title-landing{
       width: 100%;
-      margin-top: 60px;
       padding: 10px;
       text-align: center;
+      position: relative;
     }
   }
   
