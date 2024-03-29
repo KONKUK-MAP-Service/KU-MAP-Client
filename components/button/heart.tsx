@@ -1,22 +1,46 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
+import instance from '@/api/instance';
 
-const Heart = (postId: any, initialsLiked: boolean) => {
-  const [isLiked, setIsLiked] = useState(initialsLiked);
+const Heart: React.FC<commonProps> = ({ spotId, initialState}) => {
+  const [isLiked, setIsLiked] = useState(initialState);
+  const [heartImage, setHeartImage] = useState("/images/heart.png");
 
-  const heartImage = isLiked? "/images/heart-selected.png" : "/images/heart.png";
+  useEffect(() => {
+    const heartImage = isLiked ? "/images/heart-selected.png" : "/images/heart.png";
+    setHeartImage(heartImage);
+  }, [isLiked]);
 
   const toggleHeart = async () => {
-    console.log('toggleHeart');
     setIsLiked(!isLiked);
 
+    if(sessionStorage.getItem('accessToken') === null) {
+      alert('로그인이 필요합니다.');
+      window.location.reload();
+      return;
+    }
+
     try {
-      // 여기에서 API 호출을 통해 서버에 상태를 업데이트합니다.
-      // await updateBookmarkAPI(postId, !isBookmarked);
+      const data = {
+        spotId: spotId,
+      };
+
+      if(isLiked) {
+        const url = process.env.NEXT_PUBLIC_API_URL+'/like/remove';
+        const response = await instance.delete(url, {data});
+        if(response.status === 200) {
+          return;
+        }
+      }else{
+        console.log(data);
+        const url = process.env.NEXT_PUBLIC_API_URL+'/like/add';
+        const response = await instance.post(url, data);
+        if(response.status === 200) {
+          return;
+        }
+      }
     } catch (error) {
-      // 오류 발생 시, UI를 이전 상태로 롤백합니다.
       setIsLiked(isLiked);
-      console.error('Like update failed', error);
     }
   };
 
@@ -24,11 +48,5 @@ const Heart = (postId: any, initialsLiked: boolean) => {
     <Image src={heartImage} alt="heart" width={40} height={40} onClick={toggleHeart} />
   );
 };
-
-// 서버에 북마크 상태를 업데이트하는 함수
-async function updateBookmarkAPI(postId: number, shouldBookmark: boolean) {
-    // 이곳에 실제 API 호출 코드를 작성합니다.
-    // 예시: axios.post('/api/bookmark', { postId, shouldBookmark });
-}
 
 export default Heart;
