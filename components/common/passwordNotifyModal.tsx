@@ -1,6 +1,5 @@
 import React from "react";
 import Link from "next/link";
-import LoginContent from "../login/loginContent";
 
 const PasswordNotifyModal = () => {
     return (
