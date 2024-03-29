@@ -46,9 +46,11 @@ export default function Main({ projects }: any) {
   
       // 새로운 데이터를 기반으로 마커를 생성합니다.
       spots.forEach((spot: ListItemProps) => {
+        const markerColor = spot.isUsersOwnSpot ? '/images/map-own.png' : '/images/map-other.png';
+
         const markerPosition = new window.kakao.maps.LatLng(spot.latitude, spot.longtitude);
         const markerImage = new window.kakao.maps.MarkerImage(
-          '/images/map-own.png', // 마커 이미지의 주소
+          markerColor, 
           new window.kakao.maps.Size(35, 35), // 마커 이미지의 크기
           {offset: new window.kakao.maps.Point(11, 34)} // 마커 이미지의 옵션
         );
