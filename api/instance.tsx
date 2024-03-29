@@ -32,15 +32,23 @@ instance.interceptors.response.use(
         const input = {
           refreshToken: sessionStorage.getItem("refreshToken"),
         };
-        const response = await axios.post(
-          process.env.REACT_APP_SERVER_API + "/users/refresh",
-          input
-        );
+        const url = process.env.NEXT_PUBLIC_API_URL + "/users/refresh";
+        console.log(url);
+        const response = await fetch(url, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(input),
+        });
         if (response.status === 200) {
-          const accessToken = response.data.accessToken;
-          error.config.headers.Authorization = `Bearer ${accessToken}`;
+          const result = await response.json();
+          const accessToken = result.results.accessToken;
+          error.config.headers.Authorization = `${accessToken}`;
+          sessionStorage.setItem("accessToken", accessToken);
           return axios.request(error.config);
         } else {
+          console.log(response);
         }
       } catch (refreshError) {
         alert("로그인 시간이 만료됐습니다. 재로그인해주세요. ");
