@@ -50,7 +50,7 @@ function MyPage() {
     <>
     <LandingHeader />
     <h1 className="header-title-landing text-3xl font-bold">마이페이지</h1>
-    <div className="flex flex-col md:flex-row min-h-screen">
+    <div className="flex flex-col justify-center md:flex-row min-h-screen">
       <div className="mypage-container bg-white p-4 mx-10 mb-10 md:ml-10 md:mt-[120px]">
           <nav className="flex flex-col">
             <button onClick={() => handleTabClick('password')} className={`p-2 text-start ${selectedTab === 'password' || selectedTab === 'profile' ? 'text-[#fc487e] text-bold' : ''}`}>
@@ -71,7 +71,7 @@ function MyPage() {
           </nav>
       </div>
 
-        <main className="mypage-container flex-1 mx-10 md:mt-[120px]">
+        <main className="mypage-container flex-1 mx-10 md:mt-[120px] md:w-3/5 md:flex-none">
           {isNotifyModalOpen && <NotifyModal ment={ment} onBack = {onBack} />}
           {selectedTab === 'password' && <PasswordValidation onPasswordSuccess={onPasswordSuccess} />}
           {selectedTab === 'profile' && <ProfileComponent onProfileChange = {onProfileChange}/>}

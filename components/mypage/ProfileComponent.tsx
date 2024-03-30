@@ -27,6 +27,19 @@ function ProfileComponent({onProfileChange}: {onProfileChange: () => void }) {
     }
   };
 
+  const deleteProfileImage = async () => {
+    try{
+      const url = process.env.NEXT_PUBLIC_API_URL+'/profile-image/delete';
+      const response = await instance.delete(url);
+      if (response.status !== 200) {
+        alert('프로필 사진 삭제에 실패했습니다.');
+      }
+      setProfilePreview('/images/profile.png');
+    }catch (error) {
+      alert('프로필 사진 삭제에 실패했습니다.');
+    }
+  }
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -84,8 +97,13 @@ function ProfileComponent({onProfileChange}: {onProfileChange: () => void }) {
             <span className="text-[#404040] text-sm ml-2">파일 추가하기</span>
           </button>
           <div className="my-4 w-full flex justify-center rounded-full">
-              <div className="relative w-[70px] h-[70px] rounded-full overflow-hidden">
+              <div className="relative w-[100px] h-[100px] rounded-full">
                 <Image src={profilePreview} fill alt="프로필 미리보기" style={{objectFit: 'contain'}}/>
+                {
+                  profilePreview !== '/images/profile.png' && 
+                  <button className="absolute top-0 right-0 bg-gray-500 text-white px-2 py-1 rounded-full z-10"
+                  onClick={deleteProfileImage}>&times;</button>
+                }
               </div>  
           </div>
           <input
