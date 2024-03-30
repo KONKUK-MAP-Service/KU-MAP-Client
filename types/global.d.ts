@@ -38,5 +38,13 @@ declare global {
     spotId: number;
     initialState: boolean;
   };
+
+  type commentProps = {
+    commentId: number;
+    content: string;
+    author: string;
+    deletable: boolean;
+    createdDate: string;
+  };
     
 }
