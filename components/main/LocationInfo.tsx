@@ -23,10 +23,10 @@ const LocationInfo: React.FC<LocationInfoProps> = ({ data, onBack }) => {
               <div className="px-3 text-2xl text-[#222] font-bold">{spotName}</div>
           </div>
         </div> 
-        <div className="w-full h-[80%] rounded-b-lg flex flex-col justify-center items-center">
+        <div className="w-full my-10 h-[80%] rounded-b-lg flex flex-col justify-center items-center">
           <div className='overflow-y-auto w-full max-w-[90%] h-[60%] gap-4'>
             {images.map((image: string, index: number) => (
-              <div key={index} style={{ position: "relative", width: "100%", maxWidth: "90%", height: "60%"}}>
+              <div key={index} style={{ position: "relative", width: "100%", maxWidth: "90%", height: "100%"}}>
                 <Image src={image} alt={spotName} fill style={{objectFit: 'contain'}}/>
               </div>
             ))}
