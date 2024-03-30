@@ -14,7 +14,7 @@ const Heart: React.FC<commonProps> = ({ spotId, initialState}) => {
       setIsLiked(false);
       setHeartImage("/images/heart.png");
     }
-  }, [spotId]);
+  }, [initialState, spotId]);
 
 
   useEffect(() => {

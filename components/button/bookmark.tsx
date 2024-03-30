@@ -15,7 +15,7 @@ const Bookmark: React.FC<commonProps> = ({ spotId, initialState}) => {
       setIsBookmarked(false);
       setBookmarkImage("/images/bookmark.png");
     }
-  }, [spotId]);
+  }, [initialState, spotId]);
 
   useEffect(() => {
     const bookmarkImage = isBookmarked ? "/images/bookmark-selected.png" : "/images/bookmark.png";
