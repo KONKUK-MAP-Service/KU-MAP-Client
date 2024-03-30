@@ -9,6 +9,7 @@ import MapRegisterModal from '@/components/mymarker/MapRegisterModal';
 import instance from '@/api/instance';
 import MainPageFloatingButton from '@/components/main/MainPageFloationgButton';
 import MarkerDeleteNotify from '@/components/mymarker/MarkerDeleteNotify';
+import MapChangeModal from '@/components/mymarker/MapChangeModal';
 
 declare global {
   interface Window {
@@ -28,6 +29,7 @@ export default function Main({ projects }: any) {
   const [longtitue, setLongtitue] = useState(0);
   const [latitude, setLatitude] = useState(0);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isChangeModalOpen, setIsChangeModalOpen] = useState(false);
 
 
   const fetchData = async () => {
@@ -88,7 +90,7 @@ export default function Main({ projects }: any) {
         });
         
         window.onMarkerChangeClick = () => {
-          setIsModalOpen(true);
+          setIsChangeModalOpen(true);
           customOverlay.setMap(null);
         };
 
@@ -229,10 +231,12 @@ export default function Main({ projects }: any) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div>
-        <MarkerList
-          onListItemClick={(item) => setSelectedItem(item)}
-          items = {items}
-        />
+        { items &&
+          <MarkerList
+            onListItemClick={(item: ListItemProps) => setSelectedItem(item)}
+            items = {items}
+          />
+        }
         {isDeleteModalOpen && selectedItem && <MarkerDeleteNotify spotId={selectedItem.spotId} />}
         {isModalOpen && <MapRegisterModal onBack={() => setIsModalOpen(false)} longtitue={longtitue} latitude={latitude}/>}
         <UserProfile onUserProfileClick={() => {
@@ -241,6 +245,7 @@ export default function Main({ projects }: any) {
         <MainPageFloatingButton onButtonClick={() => {
           router.push('/main');
         }} />
+        {isChangeModalOpen && selectedItem && <MapChangeModal item={selectedItem} onBack={() => {window.location.reload()}} />}
         <div id="map" className="w-full h-screen">
           <div className="zoom-controls">
             <button className="zoom-button" onClick={zoomIn}>
