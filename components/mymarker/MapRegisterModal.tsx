@@ -18,7 +18,7 @@ const Modal: React.FC<MapRegisterModalProps> = ({ onBack, longtitue, latitude })
         const newImages = [...images];
         const newPreviews = [...previews];
 
-        if (newImages.length > 5) {
+        if (newImages.length > 4) {
             alert('사진은 최대 5장까지 업로드 가능합니다.');
             return;
         }
@@ -35,6 +35,12 @@ const Modal: React.FC<MapRegisterModalProps> = ({ onBack, longtitue, latitude })
             }
         }
         setImages(newImages);
+    };
+
+    // 새 이미지 추가 핸들러
+    const handleRemoveNewImage = (index: number) => {
+        setImages((prevImages) => prevImages.filter((_, i) => i !== index));
+        setPreviews((prevPreviews) => prevPreviews.filter((_, i) => i !== index));
     };
 
     const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -109,18 +115,17 @@ const Modal: React.FC<MapRegisterModalProps> = ({ onBack, longtitue, latitude })
                                 multiple
                             />
                         </div>    
-                        <div className='flex w-full space-x-2 mt-10 overflow-x-auto'>
+                        <div className='relative w-full space-x-2 mt-10 overflow-y-auto'>
                             {previews?.map((preview, index) => (
-                                <div key={index}>
-                                    <div className="w-[172px] h-[172px] rounded-[10px] overflow-hidden">
-                                        <Image
-                                            src={preview}
-                                            width={172}
-                                            height={172}
-                                            alt={`그림-${index}`}
-                                        />
-                                    </div>    
-                                </div>
+                                    <div key={index}  className='relative w-full w-[100%] max-w-[95%] h-[200px] xl:h-[300px]'>
+                                        <Image src={preview} alt={`그림-${index}`} fill style={{objectFit: 'contain'}}/>
+                                        <button 
+                                        className="absolute top-0 right-0 bg-gray-500 text-white px-2 py-1 rounded-full"
+                                        onClick={() => handleRemoveNewImage(index)}
+                                        >
+                                        &times;
+                                        </button>
+                                    </div>
                             ))}
                         </div>
                         <div className="mt-4 w-full h-[29px] text-[#222] text-lg">설명</div>   

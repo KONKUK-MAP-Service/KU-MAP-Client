@@ -238,7 +238,7 @@ export default function Main({ projects }: any) {
           />
         }
         {isDeleteModalOpen && selectedItem && <MarkerDeleteNotify spotId={selectedItem.spotId} />}
-        {isModalOpen && <MapRegisterModal onBack={() => setIsModalOpen(false)} longtitue={longtitue} latitude={latitude}/>}
+        {isModalOpen && <MapRegisterModal onBack={() => {window.location.reload()}} longtitue={longtitue} latitude={latitude}/>}
         <UserProfile onUserProfileClick={() => {
           router.push('/mypage');
         }} />
