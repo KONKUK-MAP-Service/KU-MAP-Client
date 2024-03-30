@@ -68,7 +68,6 @@ const Modal: React.FC<MapRegisterModalProps> = ({ onBack, longtitue, latitude })
             throw new Error(`HTTP error! status: ${response.status}`);
           }
           const data = await response.data;
-          console.log(data);
           alert('등록되었습니다.');
           onBack();
         } catch (error) {
