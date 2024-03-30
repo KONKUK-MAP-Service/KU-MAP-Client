@@ -1,10 +1,21 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect} from 'react';
 import Image from 'next/image';
 import instance from '@/api/instance';
 
 const Heart: React.FC<commonProps> = ({ spotId, initialState}) => {
   const [isLiked, setIsLiked] = useState(initialState);
   const [heartImage, setHeartImage] = useState("/images/heart.png");
+
+  useEffect(() => {
+    if (initialState === true){
+      setIsLiked(true);
+      setHeartImage("/images/heart-selected.png");
+    } else {
+      setIsLiked(false);
+      setHeartImage("/images/heart.png");
+    }
+  }, [spotId]);
+
 
   useEffect(() => {
     const heartImage = isLiked ? "/images/heart-selected.png" : "/images/heart.png";
