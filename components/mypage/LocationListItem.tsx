@@ -13,7 +13,14 @@ const LocationListItem: React.FC<MyPageListItemProps> = ({ spotId, spotName, cre
             <div className="w-[90%] flex flex-col items-start justify-start mt-2">
                   <span className="text-lg text-[#222]">{spotName}</span>
                   <span className="text-sm text-[#404040]">{review}</span>
-                  <span className="text-xs text-[#5e5e5e] my-2"> {date} 작성자: {author}</span>
+                  {/* `sm` 이하에서 줄바꿈 */}
+                  <span className="text-xs text-[#5e5e5e] mt-1 block sm:hidden">{date}</span>
+                  <span className="text-xs text-[#5e5e5e] block sm:hidden">작성자: {author}</span>
+
+                  {/* `sm` 이상에서 동일한 줄 */}
+                  <span className="text-xs text-[#5e5e5e] my-2 hidden sm:block">{date} 작성자: {author}</span>
+
+
             </div>
             <div className='inherit max-h-[40%]'>
                 <Bookmark spotId={spotId} initialState={bookmark}/>
