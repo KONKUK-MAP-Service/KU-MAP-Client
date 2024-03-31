@@ -60,7 +60,9 @@ function ProfileComponent({onProfileChange}: {onProfileChange: () => void }) {
     fetchData();
   }, []);
 
-
+  const onPasswordChange = (e: any) => {
+    setPassword(e.target.value);
+  }
 
   const handleSubmit = async (event: any) => {
     event.preventDefault(); // 폼의 기본 제출 동작 방지
@@ -117,22 +119,22 @@ function ProfileComponent({onProfileChange}: {onProfileChange: () => void }) {
         <form className="mt-8 space-y-4" onSubmit={handleSubmit}>
             <div>
                 <span className="text-lg text-[#404040]">아이디</span>
-                <input id="id" name="userid" type="text" autoComplete="username" pattern="[A-Za-z0-9]{2,8}" 
+                <input id="id" name="userid" type="text" autoComplete="username" pattern="[A-Za-z0-9]{2,8}"
                 required className="infoSignup mt-1" value={userid} readOnly/>
             </div>
             <div>
                 <span className="text-lg text-[#404040]">비밀번호</span>
-                <input id="password" name="password" type="password" pattern="[A-Za-z0-9]{8,20}" 
+                <input id="password" name="password" type="password" pattern="[A-Za-z0-9]{8,20}" onChange={onPasswordChange}
                 autoComplete="current-password" required className="infoSignup mt-1" value={password}/>
             </div>
             <div>    
                 <span className="text-lg text-[#404040] mt-10">닉네임</span>
-                <input id="nickname" name="nickname" type="text" autoComplete="nickname" 
+                <input id="nickname" name="nickname" type="text" autoComplete="nickname" onChange={(e) => setNickname(e.target.value)}
                 maxLength={8} className="infoSignup" value={nickname}/>
             </div>      
             <div>
                 <span className="text-lg text-[#404040] mt-10">이메일 주소</span>
-                <input id="email-address" name="email" type="email" autoComplete="email" 
+                <input id="email-address" name="email" type="email" autoComplete="email"
                 required className="infoSignup" value={email} readOnly/>
             </div>
             <div className="flex items-center justify-center">
