@@ -1,21 +1,15 @@
 import React from "react";
-import BookmarkButton from "../button/BookmarkButton";
+import Bookmark from "../button/bookmark";
 
-interface BookMarkButtonProps {
-  isSelected: boolean;
-}
-
-const BookMarkButton: React.FC<BookMarkButtonProps> = ({ isSelected }) => {
+const BookMarkButton: React.FC<commonProps> = ({spotId, initialState}) => {
   return (
-    <button className="w-[100px] h-[32px] bg-white rounded-30px flex justify-center items-center" onClick={() => {
+    <button className="common-button flex flex-row" onClick={() => {
       console.log('bookmark button clicked');
     }}>
-      <div className="w-[100px] h-[24px] flex justify-center items-center">
-        <div className="w-[24px] h-[24px] flex justify-center items-center">
-          <BookmarkButton postId={1} initialIsBookmarked={isSelected} />
+        <div className="relative w-[24px] h-[24px] flex justify-center items-center">
+          <Bookmark spotId={spotId} initialState={initialState} />
         </div>  
-        <div className="w-[80px] text-[#222] text-[14px]">즐겨찾기</div>
-      </div>
+        <span className="text-sm text-[#222] 2xl: text-base mx-1"> 즐겨찾기</span>
     </button>
   );
 };

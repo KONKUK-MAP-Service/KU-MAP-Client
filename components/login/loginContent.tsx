@@ -51,22 +51,20 @@ const LoginContent: React.FC<LoginProps> = ({ onBack }) => {
             }
         } catch (error) {
             alert('서버 오류가 발생했습니다.');
-            router.push('/');
+            window.location.href = '/';
             return;
         }
 
-        //TODO: 로그인 성공 시, 서버로부터 사용자 정보를 받아와서 sessionStorage에 저장
         try {
-            const url = process.env.NEXT_PUBLIC_API_URL+'/userinfo';
+            const url = process.env.NEXT_PUBLIC_API_URL+'/users/profile/current';
             const response = await instance.get(url);
-            console.log(response);
             if (response.status === 200) {
-                alert('로그인 성공');
-                router.push('/main');
+                const user = response.data.results;
+                sessionStorage.setItem('login_user', JSON.stringify(user));
+                window.location.href = '/main';
             }
         } catch (error) {
             console.log(error);
-            alert('서버 오류가 발생했습니다.');
             router.push('/');
             return;
         }
@@ -79,6 +77,7 @@ const LoginContent: React.FC<LoginProps> = ({ onBack }) => {
                 <Image className="absolute -translate-x-1/2 left-[90%] top-[36px]" width={40} height={40} src="/images/back.png" alt="뒤로 가기" onClick={onBack}/>
             </div>
             <div className="flex flex-col justify-start w-full">
+                <Image src="/images/logo.png" alt="logo" width={200} height={200} className="m-auto"/>
                 <div className="h-[30%] w-full flex flex-row items-center justify-center"/>
                 <div className="text-lg text-[#404040] mt-10">아이디</div>
                 <input id="id" name="userId" type="text" autoComplete="username" pattern="[A-Za-z0-9]{2,8}"

@@ -5,34 +5,46 @@ import { useRouter } from 'next/router';
 import Image from 'next/image';
 import UserProfile from '@/components/main/UserProfile';
 import MarkerList from '@/components/main/MarkerList';
-import MyMarkerFloatingButton from '@/components/main/MyMarkerFloatingButton';
-import LocationInfo from '@/components/main/LocationInfo';
-import LoginModal from '@/components/login/loginModal';
+import MapRegisterModal from '@/components/mymarker/MapRegisterModal';
 import instance from '@/api/instance';
-
+import MainPageFloatingButton from '@/components/main/MainPageFloationgButton';
+import MarkerDeleteNotify from '@/components/mymarker/MarkerDeleteNotify';
+import MapChangeModal from '@/components/mymarker/MapChangeModal';
 
 declare global {
   interface Window {
     kakao: any;
+    onMarkerRegisterClick: () => void;
+    onMarkerChangeClick: () => void;
+    onMarkerDeleteClick: () => void;
   }
 }
 
 export default function Main({ projects }: any) {
   const mapRef = useRef<any>(null);
   const router = useRouter();
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState<ListItemProps>();
-  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
-  const [isLogin, setIsLogin] = useState(false);
   const [items, setItems] = useState([]); 
+  const [longtitue, setLongtitue] = useState(0);
+  const [latitude, setLatitude] = useState(0);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isChangeModalOpen, setIsChangeModalOpen] = useState(false);
+
 
   const fetchData = async () => {
     try {
-      const endpoint = sessionStorage.getItem('accessToken') ? '/spot/login-all' : '/spot/all';
+      const endpoint = '/spot/login-all';
       const url = `${process.env.NEXT_PUBLIC_API_URL}${endpoint}`;
       const response = await instance.get(url); 
       const data = response.data.results;
+      for (let i = 0; i < data.length; i++) {
+        if (data[i].isUsersOwnSpot === false) {
+          data.splice(i, 1);
+          i--;
+        }
+      }
       setItems(data);
-
       createMarkers(data);
     } catch (error) {
       alert('서버 오류가 발생했습니다.');
@@ -46,11 +58,9 @@ export default function Main({ projects }: any) {
   
       // 새로운 데이터를 기반으로 마커를 생성합니다.
       spots.forEach((spot: ListItemProps) => {
-        const markerColor = spot.isUsersOwnSpot ? '/images/map-own.png' : '/images/map-other.png';
-
         const markerPosition = new window.kakao.maps.LatLng(spot.latitude, spot.longtitude);
         const markerImage = new window.kakao.maps.MarkerImage(
-          markerColor, 
+          '/images/map-own.png', // 마커 이미지의 주소
           new window.kakao.maps.Size(35, 35), // 마커 이미지의 크기
           {offset: new window.kakao.maps.Point(11, 34)} // 마커 이미지의 옵션
         );
@@ -61,11 +71,44 @@ export default function Main({ projects }: any) {
   
         // 생성된 마커를 지도에 표시합니다.
         marker.setMap(mapInstance);
+        
+        var content = 
+        '<div class="flex flex-row">\n'+
+          '<div class="modal-button" onclick="window.onMarkerDeleteClick()">\n'+
+                '<div class="font-semibold text-center">삭제</div>\n'+
+          '</div> \n'+
+          '<div class="modal-button ml-5" onclick="window.onMarkerChangeClick()">\n'+
+                '<div class="font-semibold">수정</div>\n'+
+          '</div> \n'+
+        '</div> ';  
+
+        var customOverlay = new window.kakao.maps.CustomOverlay({
+          position: marker.getPosition(),
+          content: content,
+          yAnchor: 2,
+          clickable: true
+        });
+        
+        window.onMarkerChangeClick = () => {
+          setIsChangeModalOpen(true);
+          customOverlay.setMap(null);
+        };
+
+        window.onMarkerDeleteClick = () => {
+          setIsDeleteModalOpen(true);
+          customOverlay.setMap(null);
+        };
   
         // 마커에 클릭 이벤트 등록 (선택 사항)
         window.kakao.maps.event.addListener(marker, 'click', () => {
           setSelectedItem(spot);
+          customOverlay.setMap(mapInstance);
         });
+
+        window.kakao.maps.event.addListener(mapInstance, 'click', () => {
+          customOverlay.setMap(null);
+        });
+
       });
     } else{
       alert('지도가 로드되지 않았습니다.');
@@ -74,18 +117,18 @@ export default function Main({ projects }: any) {
 
   //지도 설정
   useEffect(() => {
-    const accessToken = sessionStorage.getItem("accessToken");
-    setIsLogin(!!accessToken);
-    setIsLoginModalOpen(!accessToken);
+    if (sessionStorage.getItem('accessToken') === null) {
+      router.push("/main");
+    }
 
     const kakaoMapScript = document.createElement('script');
-    kakaoMapScript.async = false;
+    kakaoMapScript.async = true;
     kakaoMapScript.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_API_KEY}&autoload=false&libraries=services`;
     document.head.appendChild(kakaoMapScript);
 
     const onLoadKakaoAPI = () => {
 
-      window.kakao.maps.load(async () => {
+      window.kakao.maps.load(() => {
         const container = document.getElementById('map');
         const options = {
           center: new window.kakao.maps.LatLng(37.543536094587516, 127.07741635877292),
@@ -105,7 +148,30 @@ export default function Main({ projects }: any) {
         let marker = new window.kakao.maps.Marker({
           map: mapInstance, // 마커를 표시할 지도
           position: mapInstance.getCenter(), // 초기 마커 위치를 지도 중심으로 설정
-          image: markerImage // 마커 이미지
+          image: markerImage, // 마커 이미지,
+          clickable: true
+        });
+
+        window.onMarkerRegisterClick = () => {
+          setIsModalOpen(true);
+          customOverlay.setMap(null);
+        };
+
+        // 커스텀 오버레이의 content를 설정합니다.
+        var content = 
+          '<div class="register-floating-button" onclick="window.onMarkerRegisterClick()">\n'+
+              '<div class="flex flex-row items-center justify-center">\n'+
+                '<img src="/images/register.png" alt="등록하기" width="34" height="34" />\n'+
+                '<div class="text-white font-semibold">마커 만들기</div>\n'+
+              '</div>\n'+
+          '</div> ';
+
+        var customOverlay = new window.kakao.maps.CustomOverlay({
+          position: marker.getPosition(),
+          content: content,
+          yAnchor: 1.5,
+          xAnchor: -0.3,
+          clickable: true
         });
 
         // 지도 클릭 이벤트 리스너 등록
@@ -115,15 +181,30 @@ export default function Main({ projects }: any) {
           // 기존 마커 위치 업데이트
           marker.setPosition(latLng);
           mapInstance.setCenter(latLng);
-        });
+
+          customOverlay.setMap(null);
+        }); 
+        
+        window.kakao.maps.event.addListener(marker, 'click', function(mouseEvent: any) {
+          mapInstance.setCenter(marker.getPosition());
+
+          customOverlay.setPosition(marker.getPosition());
+          customOverlay.setMap(mapInstance);
+
+          setLatitude(marker.getPosition().getLat());
+          setLongtitue(marker.getPosition().getLng());
+        }); 
+
       });
+
 
     }  
 
-    kakaoMapScript.addEventListener('load', onLoadKakaoAPI)
+    kakaoMapScript.addEventListener('load', onLoadKakaoAPI);
 
     return () => {
       document.head.removeChild(kakaoMapScript);
+      
     };
   }, []);
 
@@ -150,30 +231,25 @@ export default function Main({ projects }: any) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div>
-        {isLoginModalOpen && <LoginModal onBack={() => setIsLoginModalOpen(false)} />}
-        <MarkerList
-          onListItemClick={(item) => setSelectedItem(item)}
-          items={items}
-        />
-        {selectedItem && <LocationInfo data={selectedItem} onBack={() => setSelectedItem(undefined)} />}
+        { items &&
+          <MarkerList
+            onListItemClick={(item: ListItemProps) => setSelectedItem(item)}
+            items = {items}
+          />
+        }
+        {isDeleteModalOpen && selectedItem && <MarkerDeleteNotify spotId={selectedItem.spotId} />}
+        {isModalOpen && <MapRegisterModal onBack={() => {window.location.reload()}} longtitue={longtitue} latitude={latitude}/>}
         <UserProfile onUserProfileClick={() => {
-          if (!isLogin) {
-            setIsLoginModalOpen(true);
-          } else {
-            router.push('/mypage');
-          }
+          router.push('/mypage');
         }} />
-        <MyMarkerFloatingButton onButtonClick={() => {
-          if (!isLogin) {
-            setIsLoginModalOpen(true);
-          } else {
-            router.push('/mymarker');
-          }
+        <MainPageFloatingButton onButtonClick={() => {
+          router.push('/main');
         }} />
+        {isChangeModalOpen && selectedItem && <MapChangeModal item={selectedItem} onBack={() => {window.location.reload()}} />}
         <div id="map" className="w-full h-screen">
           <div className="zoom-controls">
             <button className="zoom-button" onClick={zoomIn}>
-              <Image src="/images/plus.png" alt="Zoom In" width={24} height={24} />
+              <Image src="/images/plus.png" alt="Zoom In" width={24} height={24} style={{width: 'auto'}} />
             </button>
             <button className="zoom-button" onClick={zoomOut}>
               <Image src="/images/minus.png" alt="Zoom Out" width={24} height={24} />
