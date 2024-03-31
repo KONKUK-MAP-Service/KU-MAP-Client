@@ -11,24 +11,24 @@ function BookmarksComponent(){
   const[totalPages, setTotalPages] = useState(1);
 
   useEffect(() => {
+    async function getBookmarkedItems() {
+      try {
+        const pageInfo = `pageNumber=${pageNumber}&pageSize=${pageSize}`;
+        const url = `${process.env.NEXT_PUBLIC_API_URL}/users/likes-bookmarks1?${pageInfo}`;
+        const response = await instance.get(url); 
+        const data = response.data.results;
+        setItems(data);
+        if (data[0] !== null){
+          setTotalPages(data[0].totalPages);
+          setPageNumber(data[0].page);
+        }
+      } catch (error) {
+        alert('서버 오류가 발생했습니다.');
+      }
+    }
+
     getBookmarkedItems();
   }, [pageNumber, pageSize]);
-
-  const getBookmarkedItems = async () => {
-    try {
-      const pageInfo = `pageNumber=${pageNumber}&pageSize=${pageSize}`;
-      const url = `${process.env.NEXT_PUBLIC_API_URL}/users/likes-bookmarks1?${pageInfo}`;
-      const response = await instance.get(url); 
-      const data = response.data.results;
-      setItems(data);
-      if (data[0] !== null){
-        setTotalPages(data[0].totalPages);
-        setPageNumber(data[0].page);
-      }
-    } catch (error) {
-      alert('서버 오류가 발생했습니다.');
-    }
-  }
 
   function onPageChange(page: number) {
     setPageNumber(page);
