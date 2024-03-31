@@ -18,7 +18,7 @@ declare global {
 }
 
 export default function Main({ projects }: any) {
-  const mapRef = useRef(null);
+  const mapRef = useRef<any>(null);
   const router = useRouter();
   const [selectedItem, setSelectedItem] = useState<ListItemProps>();
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
