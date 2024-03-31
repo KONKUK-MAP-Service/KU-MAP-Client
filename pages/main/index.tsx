@@ -20,7 +20,7 @@ declare global {
 export default function Main({ projects }: any) {
   const mapRef = useRef(null);
   const router = useRouter();
-  const [selectedItem, setSelectedItem] = useState(null);
+  const [selectedItem, setSelectedItem] = useState<ListItemProps>();
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [isLogin, setIsLogin] = useState(false);
   const [items, setItems] = useState([]); 
@@ -155,7 +155,7 @@ export default function Main({ projects }: any) {
           onListItemClick={(item) => setSelectedItem(item)}
           items={items}
         />
-        {selectedItem && <LocationInfo data={selectedItem} onBack={() => setSelectedItem(null)} />}
+        {selectedItem && <LocationInfo data={selectedItem} onBack={() => setSelectedItem(undefined)} />}
         <UserProfile onUserProfileClick={() => {
           if (!isLogin) {
             setIsLoginModalOpen(true);

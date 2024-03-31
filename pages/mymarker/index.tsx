@@ -24,7 +24,7 @@ export default function Main({ projects }: any) {
   const mapRef = useRef(null);
   const router = useRouter();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedItem, setSelectedItem] = useState(null);
+  const [selectedItem, setSelectedItem] = useState<ListItemProps>();
   const [items, setItems] = useState([]); 
   const [longtitue, setLongtitue] = useState(0);
   const [latitude, setLatitude] = useState(0);
