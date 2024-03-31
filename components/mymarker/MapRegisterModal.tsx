@@ -83,7 +83,7 @@ const Modal: React.FC<MapRegisterModalProps> = ({ onBack, longtitue, latitude })
       
 
     return (
-            <div className="marker-list-item flex flex-col justify-start mt-5 overflow-y-auto">
+            <div className="marker-list-item flex flex-col justify-start mt-5">
                 <div className='bg-[#FAF5F9] w-full h-auto rounded-t-lg'>
                     <div className="w-full h-[72px] flex items-center justify-end">
                         <button onClick={onBack} className="m-6">
@@ -91,7 +91,7 @@ const Modal: React.FC<MapRegisterModalProps> = ({ onBack, longtitue, latitude })
                         </button>
                     </div>
                 </div> 
-                <div className="bg-white w-full h-auto">
+                <div className="bg-white w-full h-auto overflow-y-auto">
                     <div className="p-4 flex flex-col justify-center items-center px-7">
                         <div className="relative w-full h-[66px]">
                             <div className="w-full h-[20px] text-[#404040] text-[18px] gap-[12px]">장소명</div>
@@ -106,16 +106,16 @@ const Modal: React.FC<MapRegisterModalProps> = ({ onBack, longtitue, latitude })
                         <div className='mt-5 w-full h-[68px]'>
                             <div className="mt-5 flex flex-row items-center gap-[12px]">
                                 <span className="text-lg text-[#404040] whitespace-nowrap">사진</span>
-                                <span className="text-sm text-[#5e5e5e]">※ 사진은 최대 5장 업로드 할 수 있습니다.</span>
+                                <span className="text-sm text-[#5e5e5e] px-2">※ 사진은 최대 5장 업로드 할 수 있습니다.</span>
                             </div>
                             <input
                                 type="file"
                                 onChange={handleImageChange}
-                                className="modal-file-input"
+                                className="modal-file-input w-full"
                                 multiple
                             />
                         </div>    
-                        <div className='relative w-full space-x-2 mt-10 overflow-y-auto'>
+                        <div className='relative w-full space-x-2 mt-10'>
                             {previews?.map((preview, index) => (
                                     <div key={index}  className='relative w-full w-[100%] max-w-[95%] h-[200px] xl:h-[300px]'>
                                         <Image src={preview} alt={`그림-${index}`} fill style={{objectFit: 'contain'}}/>
@@ -133,10 +133,12 @@ const Modal: React.FC<MapRegisterModalProps> = ({ onBack, longtitue, latitude })
                             value={review}
                             onChange={handleDescriptionChange}
                             placeholder="장소 설명을 입력해주세요."
-                            className="modal-textarea h-[160px]"/>             
+                            className="modal-textarea h-[160px]"/>      
+                        <button className='modal-button' onClick={handleSubmit}>등록하기</button>             
                     </div>
+                    
                 </div>
-                <button className='modal-button' onClick={handleSubmit}>등록하기</button>  
+                
             </div> 
     );
 };
