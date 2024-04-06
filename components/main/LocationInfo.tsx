@@ -80,7 +80,7 @@ const LocationInfo: React.FC<LocationInfoProps> = ({ data, onBack }) => {
               ))}
           </div>  
           <p className="p-4 w-full text-[#222]">{review}</p>
-          <div className="max-w-[90%] h-[32px] flex justify-center items-center">
+          <div className="w-full h-[32px] flex justify-center items-center">
             <HeartButton spotId={spotId} initialState={like}/>
             <div className="w-4"></div>
             <BookMarkButton spotId={spotId} initialState={bookmark}/>

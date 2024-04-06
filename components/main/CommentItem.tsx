@@ -2,6 +2,7 @@ import React from 'react';
 import instance from '@/api/instance';
 import { useState } from 'react';
 import CommentDeleteNotify from './CommentDeleteNotify';
+import Image from 'next/image';
 
 interface CommentProps {
   data : commentProps;
@@ -10,8 +11,9 @@ interface CommentProps {
 }
 
 const CommentItem: React.FC<CommentProps> = ({ data, spotId, commentRefresh }) => {  
-  const { author, content, createdDate, deletable } = data;
+  const { author, content, createdDate, deletable, profileImage } = data;
   const date = createdDate.split('T')[0];
+  const profile = profileImage ? profileImage : '/images/profile.png';
   const [modalOpen, setModalOpen] = useState(false);
 
   const onDeleteButtonClick = () => {
@@ -45,9 +47,12 @@ const CommentItem: React.FC<CommentProps> = ({ data, spotId, commentRefresh }) =
       <>
         {modalOpen && <CommentDeleteNotify onBack={onCloseButtonClick} onDelete={onConfirmButtonClick}/>}
         <div className='max-h-[100px] flex flex-col'>
-          <div className="max-h-[100px] flex flex-row overflow-auto">
-              <div className="w-[90%] flex flex-col items-start justify-start mt-2">
-                    <span className="text-lg text-[#222]">{author}</span>
+          <div className="max-h-[100px] flex flex-row">
+              <div className="w-full flex flex-col items-start justify-start">
+                    <div className="flex flex-row items-center my-2">
+                      <Image src={profile} alt="profile" width={30} height={30} className="rounded-full border-[1px]"/>
+                      <span className="ml-2 text-lg text-[#222]">{author}</span>
+                    </div>  
                     <span className="text-sm text-[#404040]">{content}</span>
                     <div className='flex flex-row justify-between w-full'>
                       <span className="text-xs text-[#5e5e5e] my-2"> {date}</span>

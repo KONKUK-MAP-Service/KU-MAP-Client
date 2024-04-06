@@ -54,6 +54,7 @@ declare global {
 
   type commentProps = {
     commentId: number;
+    profileImage: string;
     content: string;
     author: string;
     deletable: boolean;
