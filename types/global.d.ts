@@ -1,4 +1,5 @@
 import { init } from "aos";
+import { StringLiteral } from "typescript";
 
 export {};
 
@@ -28,6 +29,18 @@ declare global {
     author: string;
     bookmark: boolean;
     like: boolean;
+    totalElements: number;
+    page: number;
+    size: number;
+    totalPages: number;
+  };
+
+  type MyPageCommentProps = {
+    spotId: number;
+    spotName: string;
+    spotImageurl: string;
+    usersComment: string;
+    CommentcreateDate: string;
     totalElements: number;
     page: number;
     size: number;
