@@ -102,7 +102,7 @@ const Modal: React.FC<MapChangeProps> = ({ item, onBack }) => {
           }
           const data = await response.data;
           alert('등록되었습니다.');
-          onBack();
+          window.location.reload();
         } catch (error) {
           console.error('Error during data fetching', error);
         }
