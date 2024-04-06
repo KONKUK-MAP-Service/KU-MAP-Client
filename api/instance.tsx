@@ -33,7 +33,7 @@ instance.interceptors.response.use(
           refreshToken: sessionStorage.getItem("refreshToken"),
         };
         const url = process.env.NEXT_PUBLIC_API_URL + "/users/refresh";
-        console.log(url);
+        // console.log(url);
         const response = await fetch(url, {
           method: "POST",
           headers: {
@@ -48,7 +48,7 @@ instance.interceptors.response.use(
           sessionStorage.setItem("accessToken", accessToken);
           return axios.request(error.config);
         } else {
-          console.log(response);
+          // console.log(response);
         }
       } catch (refreshError) {
         alert("로그인 시간이 만료됐습니다. 재로그인해주세요. ");
