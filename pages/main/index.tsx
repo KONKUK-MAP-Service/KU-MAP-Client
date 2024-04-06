@@ -96,24 +96,9 @@ export default function Main({ projects }: any) {
 
         fetchData();
 
-        // 마커 이미지 설정
-        const imageSrc = '/images/map-marker.png', // 마커 이미지의 주소
-              imageSize = new window.kakao.maps.Size(35, 35), // 마커 이미지의 크기
-              imageOption = {offset: new window.kakao.maps.Point(11, 34)}; // 마커 이미지의 옵션
-        const markerImage = new window.kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
-          
-        let marker = new window.kakao.maps.Marker({
-          map: mapInstance, // 마커를 표시할 지도
-          position: mapInstance.getCenter(), // 초기 마커 위치를 지도 중심으로 설정
-          image: markerImage // 마커 이미지
-        });
-
         // 지도 클릭 이벤트 리스너 등록
         window.kakao.maps.event.addListener(mapInstance, 'click', function(mouseEvent: any) {
           const latLng = mouseEvent.latLng;
-          
-          // 기존 마커 위치 업데이트
-          marker.setPosition(latLng);
           mapInstance.setCenter(latLng);
         });
       });
