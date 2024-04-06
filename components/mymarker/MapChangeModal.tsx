@@ -12,6 +12,7 @@ const Modal: React.FC<MapChangeProps> = ({ item, onBack }) => {
     const [review, setDescription] = useState('');
     const [images, setImages] = useState<File[]>([]);
     const [previews, setPreviews] = useState<string[]>([]);
+    const [deleteImageUrls, setDeleteImageUrls] = useState<string[]>([]);
     const spotId = item.spotId;
 
     useEffect(() => {
@@ -55,6 +56,7 @@ const Modal: React.FC<MapChangeProps> = ({ item, onBack }) => {
     // 기존 이미지 삭제 핸들러
     const handleRemoveExistingImage = (index: number) => {
         setPreviews((prevPreviews) => prevPreviews.filter((_, i) => i !== index));
+        setDeleteImageUrls((prevDeleteImageUrls) => [...prevDeleteImageUrls, item.images[index]]);
     };
 
     // 새 이미지 추가 핸들러
@@ -65,14 +67,29 @@ const Modal: React.FC<MapChangeProps> = ({ item, onBack }) => {
 
     const handleSubmit = async () => {
         const formData = new FormData();
+
+        if (spotName === '') {
+          alert('장소명을 입력해주세요.');
+          return;
+        }
+
+        if (review === '') {
+          alert('설명을 입력해주세요.');
+          return;
+        }
       
         images.forEach((file) => {
           formData.append('multipartFileList', file);
         });
+
+        if (images.length === 0) {
+            formData.append('multipartFileList', new Blob());
+        }
       
         const update = JSON.stringify({
           spotName: spotName,
           review: review,
+          deleteImageUrls: deleteImageUrls,
         });
         formData.append('update', new Blob([update], {type : 'application/json'}));
       
