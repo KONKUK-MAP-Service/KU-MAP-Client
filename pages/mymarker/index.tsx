@@ -72,15 +72,29 @@ export default function Main({ projects }: any) {
         // 생성된 마커를 지도에 표시합니다.
         marker.setMap(mapInstance);
         
-        var content = 
-        '<div class="flex flex-row">\n'+
-          '<div class="modal-button" onclick="window.onMarkerDeleteClick()">\n'+
-                '<div class="font-semibold text-center">삭제</div>\n'+
-          '</div> \n'+
-          '<div class="modal-button ml-5" onclick="window.onMarkerChangeClick()">\n'+
-                '<div class="font-semibold">수정</div>\n'+
-          '</div> \n'+
-        '</div> ';  
+        var content = document.createElement('div');
+        content.className = 'flex flex-row';
+
+        var changeButton = document.createElement('div');
+        changeButton.className = 'modal-button';
+        changeButton.innerHTML = '수정';
+        changeButton.addEventListener('click', () => {
+          setSelectedItem(spot);
+          customOverlay.setMap(null);
+          setIsChangeModalOpen(true);
+        });
+
+        var deleteButton = document.createElement('div');
+        deleteButton.className = 'modal-button ml-5';
+        deleteButton.innerHTML = '삭제';
+        deleteButton.addEventListener('click', () => {
+          setSelectedItem(spot);
+          customOverlay.setMap(null);
+          setIsDeleteModalOpen(true);
+        });
+
+        content.appendChild(changeButton);
+        content.appendChild(deleteButton);
 
         var customOverlay = new window.kakao.maps.CustomOverlay({
           position: marker.getPosition(),
@@ -90,13 +104,13 @@ export default function Main({ projects }: any) {
         });
         
         window.onMarkerChangeClick = () => {
-          setIsChangeModalOpen(true);
           customOverlay.setMap(null);
+          setIsChangeModalOpen(true);
         };
 
         window.onMarkerDeleteClick = () => {
-          setIsDeleteModalOpen(true);
           customOverlay.setMap(null);
+          setIsDeleteModalOpen(true);
         };
   
         // 마커에 클릭 이벤트 등록 (선택 사항)
@@ -222,6 +236,13 @@ export default function Main({ projects }: any) {
     mapRef.current.setLevel(level + 1); // 지도를 축소
   };
 
+  function onBack() {
+    setSelectedItem(undefined);
+    setIsModalOpen(false);
+    setIsDeleteModalOpen(false);
+    setIsChangeModalOpen(false);
+  }
+
   return (
     <>
       <Head>
@@ -233,11 +254,11 @@ export default function Main({ projects }: any) {
       <div>
         { items &&
           <MarkerList
-            onListItemClick={(item: ListItemProps) => setSelectedItem(item)}
+            onListItemClick={(item: ListItemProps) => {setIsChangeModalOpen(true); setSelectedItem(item);}}
             items = {items}
           />
         }
-        {isDeleteModalOpen && selectedItem && <MarkerDeleteNotify spotId={selectedItem.spotId} />}
+        {isDeleteModalOpen && selectedItem && <MarkerDeleteNotify spotId={selectedItem.spotId} onBack={onBack}/>}
         {isModalOpen && <MapRegisterModal onBack={() => {window.location.reload()}} longtitue={longtitue} latitude={latitude}/>}
         <UserProfile onUserProfileClick={() => {
           router.push('/mypage');
@@ -245,7 +266,7 @@ export default function Main({ projects }: any) {
         <MainPageFloatingButton onButtonClick={() => {
           router.push('/main');
         }} />
-        {isChangeModalOpen && selectedItem && <MapChangeModal item={selectedItem} onBack={() => {window.location.reload()}} />}
+        {isChangeModalOpen && selectedItem && <MapChangeModal item={selectedItem} onBack={onBack} />}
         <div id="map" className="w-full h-screen">
           <div className="zoom-controls">
             <button className="zoom-button" onClick={zoomIn}>

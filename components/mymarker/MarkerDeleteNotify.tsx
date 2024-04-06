@@ -3,7 +3,7 @@ import Image from "next/image";
 import instance from "@/api/instance";
 
 
-const MarkerDeleteNotify = ({ spotId }: { spotId: number}) => {
+const MarkerDeleteNotify = ({ spotId, onBack}: { spotId: number, onBack: () => void}) => {
     const deleteMarker = async () => {
         const url = `${process.env.NEXT_PUBLIC_API_URL}/spot/${spotId}`;
         
@@ -27,7 +27,7 @@ const MarkerDeleteNotify = ({ spotId }: { spotId: number}) => {
             <div className="notifyModal">
                 <div className="flex flex-col items-center justify-center">
                     <div className="w-full flex justify-end px-1">
-                        <Image src="/images/back.png" alt="Close" width={24} height={24} onClick= { () => window.location.reload()}/>
+                        <Image src="/images/back.png" alt="Close" width={24} height={24} onClick= {onBack}/>
                     </div>
                     <h2 className="my-5 text-lg text-center">정말로 삭제하시겠습니까?<br/><span className="text-[#9E67F7] text-sm">※ 다시 복구할 수 없습니다.</span></h2>
                     <button className="modal-button" onClick={deleteMarker}>삭제하기</button>

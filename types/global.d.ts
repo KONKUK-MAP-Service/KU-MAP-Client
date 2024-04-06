@@ -36,6 +36,7 @@ declare global {
   };
 
   type MyPageCommentProps = {
+    commentId: number;
     spotId: number;
     spotName: string;
     spotImageurl: string;
