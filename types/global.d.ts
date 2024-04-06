@@ -1,4 +1,5 @@
 import { init } from "aos";
+import { StringLiteral } from "typescript";
 
 export {};
 
@@ -34,6 +35,19 @@ declare global {
     totalPages: number;
   };
 
+  type MyPageCommentProps = {
+    commentId: number;
+    spotId: number;
+    spotName: string;
+    spotImageurl: string;
+    usersComment: string;
+    CommentcreateDate: string;
+    totalElements: number;
+    page: number;
+    size: number;
+    totalPages: number;
+  };
+
   type commonProps = {
     spotId: number;
     initialState: boolean;
@@ -41,6 +55,7 @@ declare global {
 
   type commentProps = {
     commentId: number;
+    profileImage: string;
     content: string;
     author: string;
     deletable: boolean;

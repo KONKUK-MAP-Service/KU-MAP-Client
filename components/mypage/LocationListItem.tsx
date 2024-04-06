@@ -8,7 +8,7 @@ const LocationListItem: React.FC<MyPageListItemProps> = ({ spotId, spotName, cre
   const date = createDate.split('T')[0];
 
     return (
-      <div className='inherit h-[20%] min-h-[101px] w-[95%] min-h-[100px] flex flex-col my-2'>
+      <div className='inherit h-[20%] min-h-[101px] min-h-[100px] flex flex-col my-2'>
         <div className="inherit h-[20%] min-h-[100px] flex flex-row overflow-auto">
             <div className="w-[90%] flex flex-col items-start justify-start mt-2">
                   <span className="text-lg text-[#222]">{spotName}</span>

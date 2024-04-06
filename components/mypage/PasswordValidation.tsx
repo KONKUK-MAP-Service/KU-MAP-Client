@@ -8,11 +8,9 @@ function PasswordValidation({onPasswordSuccess}: {onPasswordSuccess: () => void}
     const [password, setPassword] = useState('');
 
     const handlePasswordChange = (event: any) => {
-        const password = event.target.value;
-        setIsPasswordValid(password.length >= 8 && password.length <= 20);
-        if (isPasswordValid) {
-            setPassword(password);
-        }
+        const pwd = event.target.value;
+        setPassword(pwd);
+        setIsPasswordValid(pwd.length >= 8 && pwd.length <= 20);
     };
 
     const fetchData = async () => {

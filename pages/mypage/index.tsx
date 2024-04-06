@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import PasswordValidation from "@/components/mypage/PasswordValidation";
 import ProfileComponent from "@/components/mypage/ProfileComponent";
+import CommentComponent from "@/components/mypage/CommentComponent";
 import NotifyModal from "@/components/common/NotifyModal";
 import WithdrawComponent from "@/components/mypage/WithdrawComponent";
 import LogoutModal from "@/components/common/LogoutModal";
@@ -75,7 +76,7 @@ function MyPage() {
           {isNotifyModalOpen && <NotifyModal ment={ment} onBack = {onBack} />}
           {selectedTab === 'password' && <PasswordValidation onPasswordSuccess={onPasswordSuccess} />}
           {selectedTab === 'profile' && <ProfileComponent onProfileChange = {onProfileChange}/>}
-          {selectedTab === 'comments' && <CommentsComponent />}
+          {selectedTab === 'comments' && <CommentComponent />}
           {selectedTab === 'bookmarks' && <BookmarksComponent />}
           {selectedTab === 'withdrawPassword' && <PasswordValidation onPasswordSuccess={onWithdrawSuccess}/>}
           {selectedTab === 'withdraw' && <WithdrawComponent />}
@@ -84,11 +85,6 @@ function MyPage() {
     </div>
     </>
   );
-}
-
-function CommentsComponent() {
-  // 내가 단 댓글 컴포넌트 내용
-  return <div>내가 단 댓글 내용</div>;
 }
 
 export default MyPage;
