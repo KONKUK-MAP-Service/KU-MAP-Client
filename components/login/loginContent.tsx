@@ -64,14 +64,8 @@ const LoginContent: React.FC<LoginProps> = ({ onBack }) => {
                 window.location.href = '/main';
                 return;
             }
-            console.log(response.status);
-            if (response.status === 409) {
-                alert('로그인이 필요합니다.');
-                router.push('/');
-                return;
-            }
+            
         } catch (error) {
-            console.log(error);
             router.push('/');
             return;
         }

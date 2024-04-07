@@ -10,7 +10,7 @@ const SignupPage = () => {
 
   // 체크박스 변경을 처리하는 함수
   const handleCheckboxChange = (event: any) => {
-    console.log(event.target.checked);
+    // console.log(event.target.checked);
     setIsChecked(event.target.checked);
   };
 
@@ -41,11 +41,19 @@ const SignupPage = () => {
         body: JSON.stringify(data), // JavaScript 객체를 JSON 문자열로 변환
       });
 
-      if (!response.ok) {
-        throw new Error(`Error: ${response.statusText}`);
+      if (!response.ok && response.status !== 409) {
+        alert('회원가입에 실패했습니다.');
+        event.target.reset();
+        return;
       }
 
       const result = await response.json(); // 서버 응답을 JSON으로 파싱
+
+      if (response.status === 409) {
+        alert(result.message);
+        event.target.reset();
+        return;
+      }
       router.push('/');
     } catch (error) {
       console.error('Submission failed', error);
