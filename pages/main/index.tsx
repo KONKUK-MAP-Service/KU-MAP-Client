@@ -126,6 +126,14 @@ export default function Main({ projects }: any) {
     mapRef.current.setLevel(level + 1); // 지도를 축소
   };
 
+  function handleSelectedItem(item: ListItemProps) {
+    setSelectedItem(item);
+    if (!mapRef.current) return;
+    const mapInstance = mapRef.current;
+    const markerPosition = new window.kakao.maps.LatLng(item.latitude, item.longtitude);
+    mapInstance.setCenter(markerPosition);
+  }
+
   return (
     <>
       <Head>
@@ -137,7 +145,7 @@ export default function Main({ projects }: any) {
       <div>
         {isLoginModalOpen && <LoginModal onBack={() => setIsLoginModalOpen(false)} />}
         <MarkerList
-          onListItemClick={(item) => setSelectedItem(item)}
+          onListItemClick={(item) => handleSelectedItem(item)}
           items={items}
         />
         {selectedItem && <LocationInfo data={selectedItem} onBack={() => setSelectedItem(undefined)} />}

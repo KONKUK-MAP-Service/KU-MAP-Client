@@ -88,8 +88,7 @@ body {
     /* 모달 크기 */
     width: 100%;
     max-width: 35%; /* 최대 너비 */
-    height: 100%;
-    max-height: 70%; /* 최대 높이 */
+    height: fit-content;
     /* 모달 위치 */
     position: fixed;
     top: 50%;

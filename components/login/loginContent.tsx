@@ -62,6 +62,13 @@ const LoginContent: React.FC<LoginProps> = ({ onBack }) => {
                 const user = response.data.results;
                 sessionStorage.setItem('login_user', JSON.stringify(user));
                 window.location.href = '/main';
+                return;
+            }
+            console.log(response.status);
+            if (response.status === 409) {
+                alert('로그인이 필요합니다.');
+                router.push('/');
+                return;
             }
         } catch (error) {
             console.log(error);
