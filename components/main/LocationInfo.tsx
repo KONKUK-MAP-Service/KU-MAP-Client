@@ -7,12 +7,12 @@ import instance from '@/api/instance';
 import CommentItem from './CommentItem';
 
 interface LocationInfoProps {
-    data: any;
+    data: ListItemProps;
     onBack: () => void;
 }
 
 const LocationInfo: React.FC<LocationInfoProps> = ({ data, onBack }) => {
-  const { spotId, spotName, review, createDate, images, bookmark, like } = data;  
+  const { spotId, spotName, review, createDate, images, bookmark, like, author } = data;  
   const date = createDate.split('T')[0];
   const [newComment, setNewComment] = useState('');
   const [comments, setComments] = useState([]);
@@ -48,7 +48,7 @@ const LocationInfo: React.FC<LocationInfoProps> = ({ data, onBack }) => {
         const data = response.data.results;
         setComments(data);
       } catch (error) {
-        console.error('Comment fetch failed', error);
+        console.error('Comment fetch failed');
       }
     };
     fetchData();
@@ -67,7 +67,7 @@ const LocationInfo: React.FC<LocationInfoProps> = ({ data, onBack }) => {
               <Image src="/images/back.png" alt="Close" width={24} height={24}/>
           </button>
           <div className='w-full flex flex-col items-start justify-start'>
-              <div className='px-3 text-sm text-[#222]'>{date} 작성자: test</div>
+              <div className='px-3 text-sm text-[#222]'>{date} 작성자: {author}</div>
               <div className="px-3 pb-2 text-2xl text-[#222] font-bold">{spotName}</div>
           </div>
         </div> 
