@@ -32,6 +32,21 @@ export default function Home({ projects }: any) {
 
   return (
   <> 
+    {/* <Head>
+        <title>쿠석쿠석</title>
+        <meta name="description" content="건대의 모든 장소!
+                                          건대생들이 구석구석 만들어 가는 지도 나만의 장소를 공유해 보세요." />
+        <meta name="robots" content="index,nofollow"></meta>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="/favicon.ico" />
+        <meta property="og:url" content="https://www.kusukmap.com" />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="쿠석쿠석" />
+        <meta property="og:description" content="건대의 모든 장소!
+        건대생들이 구석구석 만들어 가는 지도
+        나만의 장소를 공유해 보세요." />
+        <meta property="og:image" content="logo.png" />
+    </Head> */}
     <div className="relative flex justify-center items-center min-h-screen">
       <div className="flex flex-col md:flex-row items-center justify-around w-full">
         {/* 로고 */}
