@@ -1,3 +1,4 @@
+import Footer from "@/components/common/Footer";
 import LandingHeader from "@/components/common/LandingHeader";
 import { useRouter } from "next/router";
 import React from "react";
@@ -62,6 +63,7 @@ const SignupPage = () => {
   };
 
   return (
+    <>
     <div className="flex flex-col items-center justify-center min-h-screen px-4 sm:px-6 lg:px-8">
       <LandingHeader />
       <div className="w-full max-w-4xl p-8 bg-white shadow-md overflow-hidden rounded-xl sm:rounded-lg">
@@ -162,6 +164,8 @@ const SignupPage = () => {
         </form>
       </div>
     </div>
+    <Footer />
+    </>
   );
 }
 

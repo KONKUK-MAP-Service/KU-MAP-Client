@@ -8,6 +8,7 @@ import NotifyModal from "@/components/common/NotifyModal";
 import WithdrawComponent from "@/components/mypage/WithdrawComponent";
 import LogoutModal from "@/components/common/LogoutModal";
 import BookmarksComponent from "@/components/mypage/BookmarksComponent";
+import Footer from "@/components/common/Footer";
 
 // 세션에 유저 정보가 있으면 마이페이지를 보여줍니다.
 
@@ -83,6 +84,7 @@ function MyPage() {
           {selectedTab === 'logout' && <LogoutModal onBack = {onBack}/>}
         </main>
     </div>
+    <Footer />
     </>
   );
 }

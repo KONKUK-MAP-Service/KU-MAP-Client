@@ -4,6 +4,7 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import PasswordNotifyModal from "@/components/common/passwordNotifyModal";
 import axios from "axios";
+import Footer from "@/components/common/Footer";
 
 function SignupPage() {
   const router = useRouter();
@@ -66,13 +67,12 @@ function SignupPage() {
   };
 
   return (
+    <>
     <div className="flex flex-col items-center justify-center min-h-screen px-4 sm:px-6 lg:px-8">
       <LandingHeader />
       {isPassowrdNotifyModalOpen && <PasswordNotifyModal />}
-      <h2 className="title-landing">
-        비밀번호 찾기
-      </h2>
       <div className="form-landing max-w-2xl">
+        <p className="text-center w-full text-2xl mt-4">비밀번호 찾기</p>
         <div className="m-10 flex flex-col items-center justify-center">
           <div className="text-base text-[#404040]">가입시 등록한 아이디와 비밀번호를 입력해주세요.</div>
           <div className="text-base text-[#404040]">등록한 이메일로 임시 비밀번호가 전송됩니다.</div>
@@ -100,6 +100,8 @@ function SignupPage() {
         </form>
       </div>
     </div>
+    <Footer />
+    </>
   );
 }
 

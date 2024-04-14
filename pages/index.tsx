@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import MainLoginModal from '@/components/login/mainLoginModal';
 import LandingHeader from '@/components/common/LandingHeader';
+import Footer from '@/components/common/Footer';
 
 export default function Home({ projects }: any) {
   const [isLoginMoalOpen, setIsLoginModalOpen] = useState(false);
@@ -54,7 +55,7 @@ export default function Home({ projects }: any) {
           <LandingHeader />
         </div>  
         {/* 이미지와 텍스트 컨테이너 */}
-        <div className="flex flex-col items-center ml-20">
+        <div className="flex flex-col items-center md:ml-20">
           <Image src={mainImage} alt="main" width={780} height={780} style={{
               maxWidth: '100vw', // 화면 너비를 넘지 않도록
               maxHeight: '100vh', // 화면 높이를 넘지 않도록
@@ -92,6 +93,7 @@ export default function Home({ projects }: any) {
       </div>
       {isLoginMoalOpen && <MainLoginModal onBack={handleBack} />}
     </div>
+    <Footer />
   </>
   );
 }

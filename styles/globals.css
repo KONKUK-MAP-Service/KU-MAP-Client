@@ -182,15 +182,6 @@ body {
     transform: translateX(-50%);
     text-align: center;
   }
-  
-  .title-landing{
-    position: fixed;
-    font-size: 40px;
-    color: black;
-    top: 10%;
-    text-align: center;
-    text-size-adjust: 100%;
-  }
 
   .form-landing{
     width: 100%;
