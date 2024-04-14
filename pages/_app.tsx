@@ -46,7 +46,7 @@ export default function App({ Component, pageProps }: AppProps) {
         <meta property="og:description" content="건대의 모든 장소!
         건대생들이 구석구석 만들어 가는 지도
         나만의 장소를 공유해 보세요." />
-        <meta property="og:image" content="logo.png" />
+        <meta property="og:image" content="https://www.kusukmap.com/_next/image?url=/images/mainPage.png&w=1920&q=75" />
       </Head>
       {/* Global Site Tag (gtag.js) - Google Analytics */}
       <Script
