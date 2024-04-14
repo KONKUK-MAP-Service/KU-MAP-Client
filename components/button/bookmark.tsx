@@ -43,7 +43,7 @@ const Bookmark: React.FC<commonProps> = ({ spotId, initialState}) => {
           return;
         }
       }else{
-        console.log(data);
+        // console.log(data);
         const url = process.env.NEXT_PUBLIC_API_URL+'/bookmark/add';
         const response = await instance.post(url, data);
         if(response.status === 200) {

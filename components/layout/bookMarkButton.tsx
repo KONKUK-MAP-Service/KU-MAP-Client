@@ -3,9 +3,7 @@ import Bookmark from "../button/bookmark";
 
 const BookMarkButton: React.FC<commonProps> = ({spotId, initialState}) => {
   return (
-    <button className="common-button flex flex-row" onClick={() => {
-      console.log('bookmark button clicked');
-    }}>
+    <button className="common-button flex flex-row">
         <div className="relative w-[24px] h-[24px] flex justify-center items-center">
           <Bookmark spotId={spotId} initialState={initialState} />
         </div>  
