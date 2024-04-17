@@ -55,11 +55,10 @@ instance.interceptors.response.use(
         RemoveLoginStatusInSession();
         window.location.href = "/";
       }
-    } else if (error.response && error.response.data.code === 3006) {
-      alert("만료된 리프레쉬 토큰입니다. 다시 로그인해주세요. ");
+    } else {
+      alert("서버 오류가 발생했습니다.");
       RemoveLoginStatusInSession();
       window.location.href = "/";
-      return;
     } 
     return Promise.reject(error);
   }
