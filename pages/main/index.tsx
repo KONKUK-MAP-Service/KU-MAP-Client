@@ -9,6 +9,7 @@ import MyMarkerFloatingButton from '@/components/main/MyMarkerFloatingButton';
 import LocationInfo from '@/components/main/LocationInfo';
 import LoginModal from '@/components/login/loginModal';
 import instance from '@/api/instance';
+import HideButton from '@/components/common/hideButton';
 
 
 declare global {
@@ -24,6 +25,7 @@ export default function Main({ projects }: any) {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [isLogin, setIsLogin] = useState(false);
   const [items, setItems] = useState([]); 
+  const [hide, setHide] = useState(false);
 
   const fetchData = async () => {
     try {
@@ -144,11 +146,18 @@ export default function Main({ projects }: any) {
       </Head>
       <div>
         {isLoginModalOpen && <LoginModal onBack={() => setIsLoginModalOpen(false)} />}
-        <MarkerList
-          onListItemClick={(item) => handleSelectedItem(item)}
-          items={items}
-        />
-        {selectedItem && <LocationInfo data={selectedItem} onBack={() => setSelectedItem(undefined)} />}
+        {
+          !hide &&
+          <MarkerList
+            onListItemClick={(item) => handleSelectedItem(item)}
+            items={items}
+          />
+        } 
+        <HideButton onClick={() => setHide(!hide)} active={hide}/>
+        {selectedItem && <LocationInfo 
+        isHide={hide}
+        data={selectedItem} 
+        onBack={() => setSelectedItem(undefined)} />}
         <UserProfile onUserProfileClick={() => {
           if (!isLogin) {
             setIsLoginModalOpen(true);

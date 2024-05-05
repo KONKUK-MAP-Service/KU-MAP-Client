@@ -5,10 +5,11 @@ import instance from '@/api/instance';
 interface MapRegisterModalProps {
     longtitue: number;
     latitude: number;
+    isHide: boolean;
     onBack: () => void;
 }
 
-const Modal: React.FC<MapRegisterModalProps> = ({ onBack, longtitue, latitude }) => {
+const Modal: React.FC<MapRegisterModalProps> = ({ onBack, longtitue, latitude, isHide }) => {
     const [spotName, setTitle] = useState('');
     const [review, setDescription] = useState('');
     const [images, setImages] = useState<File[]>([]);
@@ -83,7 +84,7 @@ const Modal: React.FC<MapRegisterModalProps> = ({ onBack, longtitue, latitude })
       
 
     return (
-            <div className="marker-list-item flex flex-col justify-start mt-5">
+            <div className={`marker-list-item ${isHide? 'left' : ''} flex flex-col justify-start`}>
                 <div className='bg-[#FAF5F9] w-full h-auto rounded-t-lg'>
                     <div className="w-full h-[72px] flex items-center justify-end">
                         <button onClick={onBack} className="m-6">

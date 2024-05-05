@@ -8,10 +8,11 @@ import CommentItem from './CommentItem';
 
 interface LocationInfoProps {
     data: ListItemProps;
+    isHide: boolean;
     onBack: () => void;
 }
 
-const LocationInfo: React.FC<LocationInfoProps> = ({ data, onBack }) => {
+const LocationInfo: React.FC<LocationInfoProps> = ({ data, onBack, isHide}) => {
   const { spotId, spotName, review, createDate, images, bookmark, like, author } = data;  
   const date = createDate.split('T')[0];
   const [newComment, setNewComment] = useState('');
@@ -61,7 +62,7 @@ const LocationInfo: React.FC<LocationInfoProps> = ({ data, onBack }) => {
   }, []);
 
   return (
-    <div className="marker-list-item flex flex-col h-screen">
+    <div className={`marker-list-item ${isHide? 'left' : ''} flex flex-col h-screen`}>
         <div className='w-full bg-[#FAF5F9] h-[40%] rounded-t-lg flex flex-col items-end md:h-[20%]'>
           <button onClick={onBack} className="mt-3 mx-5">
               <Image src="/images/back.png" alt="Close" width={24} height={24}/>
